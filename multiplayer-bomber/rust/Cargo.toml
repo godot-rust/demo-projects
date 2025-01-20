@@ -1,0 +1,15 @@
+[package]
+name = "multiplayer-bomber"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.80"
+license = "MPL-2.0"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# `experimental-godot-api` feature needs to be enabled since godot's classes `MultiplayerSynchronizer`, `MultiplayerApi` and few others are marked as experimental.
+# `experimental` in godot's context mean there are no guarantees of stability of a given API - it can be renamed in later version or its signature might be changed slightly.
+godot = { git = "https://github.com/godot-rust/gdext.git", features = ["experimental-godot-api"] }
