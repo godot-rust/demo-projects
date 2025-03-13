@@ -21,7 +21,7 @@ if [ -z "$example" ]; then
 fi
 
 PRE="# EXAMPLE $example |"
-dir="examples/$example/godot"
+dir="./$example/godot"
 logfile="stderr-$example.log"
 # stdout also outputs some "ERROR:" messages, these are currently ignored.
 

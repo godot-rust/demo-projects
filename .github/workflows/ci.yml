@@ -215,10 +215,16 @@ jobs:
 
       - name: "Run examples for short time"
         run: |
-           # List all folders in './example' directory
-           for example in $(ls examples); do
-               ./.github/other/check-example.sh "$example"
-           done
+          # Enable extended globbing to allow pattern exclusion.
+          shopt -s extglob
+
+          # Match all directories/files except `target` and any starting with `.`.
+          files='!(target|.*)/'
+
+          # List all folders in current directory. Don't quote $files variable.
+          for demo in $files; do
+          ./.github/other/check-example.sh "$demo"
+          done
 
 
   cargo-deny-machete:
