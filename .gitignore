@@ -12,9 +12,6 @@ Cargo.lock
 **/.godot/**
 *.import
 
-# Very aware that .uid files are supposed to be checked in; but while 4.4 is in development, this is fluctuating too much.
-*.uid
-
 # Needed to run projects without having to open the editor first.
 !**/.godot/extension_list.cfg
 
