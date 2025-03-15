@@ -31,6 +31,8 @@ impl Hud {
 
     #[func]
     fn show_start_button(&mut self) {
+        panic!("test panick")
+
         let mut message_label = self.base().get_node_as::<Label>("MessageLabel");
         message_label.set_text("Dodge the\nCreeps!");
         message_label.show();
