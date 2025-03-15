@@ -20,7 +20,7 @@ if [ -z "$example" ]; then
     exit 1
 fi
 
-PRE="# EXAMPLE $example |"
+PRE="# DEMO $example |"
 dir="./$example/godot"
 logfile="stderr-$example.log"
 # stdout also outputs some "ERROR:" messages, these are currently ignored.

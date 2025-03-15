@@ -175,9 +175,9 @@ jobs:
             artifact-name: linux-nightly
             godot-binary: godot.linuxbsd.editor.dev.x86_64
 
-          - name: linux-4.3
+          - name: linux-4.4
             os: ubuntu-22.04
-            artifact-name: linux-4.3
+            artifact-name: linux-4.4
             godot-binary: godot.linuxbsd.editor.dev.x86_64
 
           # Deliberately don't include:
@@ -223,7 +223,8 @@ jobs:
 
           # List all folders in current directory. Don't quote $files variable.
           for demo in $files; do
-          ./.github/other/check-example.sh "$demo"
+            # Strip trailing '/' from folder name.
+          	./.github/other/check-example.sh "${demo%/}"
           done
 
 
