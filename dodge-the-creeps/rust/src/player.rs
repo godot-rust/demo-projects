@@ -12,13 +12,14 @@ pub struct Player {
 
 #[godot_api]
 impl Player {
+    // Public signal, since it's used by Main struct.
     #[signal]
-    fn hit();
+    pub fn hit();
 
     #[func]
     fn on_player_body_entered(&mut self, _body: Gd<PhysicsBody2D>) {
         self.base_mut().hide();
-        self.base_mut().emit_signal("hit", &[]);
+        self.signals().hit().emit();
 
         let mut collision_shape = self
             .base()

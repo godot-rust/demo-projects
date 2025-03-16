@@ -9,8 +9,9 @@ pub struct Hud {
 
 #[godot_api]
 impl Hud {
+    // Public signal, since it's used by Main struct.
     #[signal]
-    fn start_game();
+    pub fn start_game();
 
     #[func]
     pub fn show_message(&self, text: GString) {
@@ -51,11 +52,7 @@ impl Hud {
         let mut button = self.base().get_node_as::<Button>("StartButton");
         button.hide();
 
-        // Note: this works only because `start_game` is a deferred signal.
-        // This method keeps a &mut Hud, and start_game calls Main::new_game(), which itself accesses this Hud
-        // instance through Gd<Hud>::bind_mut(). It will try creating a 2nd &mut reference, and thus panic.
-        // Deferring the signal is one option to work around it.
-        self.base_mut().emit_signal("start_game", &[]);
+        self.signals().start_game().emit();
     }
 
     #[func]

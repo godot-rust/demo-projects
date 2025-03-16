@@ -1,6 +1,4 @@
-use crate::hud::Hud;
-use crate::mob;
-use crate::player;
+use crate::{hud, mob, player};
 
 use godot::classes::{Marker2D, PathFollow2D, RigidBody2D, Timer};
 use godot::prelude::*;
@@ -14,6 +12,7 @@ use std::f32::consts::PI;
 pub struct Main {
     mob_scene: OnReady<Gd<PackedScene>>,
     player: OnReady<Gd<player::Player>>,
+    hud: OnReady<Gd<hud::Hud>>,
     music: OnReady<Gd<AudioStreamPlayer>>,
     death_sound: OnReady<Gd<AudioStreamPlayer>>,
     score: i64,
@@ -27,6 +26,7 @@ impl INode for Main {
         Self {
             mob_scene: OnReady::new(|| load("res://Mob.tscn")),
             player: OnReady::node("Player"),
+            hud: OnReady::node("Hud"),
             music: OnReady::node("Music"),
             death_sound: OnReady::node("DeathSound"),
             score: 0,
@@ -34,12 +34,29 @@ impl INode for Main {
         }
     }
 
-    fn ready(&mut self) {}
+    fn ready(&mut self) {
+        // The OnReady instances are now initialized, we can access them like normal fields.
+
+        // Get a Gd<Main> pointer to this instance.
+        let main = self.to_gd();
+
+        // Connect Player::hit -> Main::game_over.
+        self.player
+            .signals()
+            .hit()
+            .connect_obj(&main, Self::game_over);
+
+        // Connect Hud::start_game -> Main::new_game.
+        self.hud
+            .signals()
+            .start_game()
+            .connect_obj(&main, Self::new_game);
+    }
 }
 
 #[godot_api]
 impl Main {
-    #[func]
+    // No #[func] here, this method is directly called from Rust (via type-safe signals).
     fn game_over(&mut self) {
         let mut score_timer = self.base().get_node_as::<Timer>("ScoreTimer");
         let mut mob_timer = self.base().get_node_as::<Timer>("MobTimer");
@@ -47,14 +64,13 @@ impl Main {
         score_timer.stop();
         mob_timer.stop();
 
-        let mut hud = self.base().get_node_as::<Hud>("Hud");
-        hud.bind_mut().show_game_over();
+        self.hud.bind_mut().show_game_over();
 
         self.music.stop();
         self.death_sound.play();
     }
 
-    #[func]
+    // No #[func].
     pub fn new_game(&mut self) {
         let start_position = self.base().get_node_as::<Marker2D>("StartPosition");
         let mut start_timer = self.base().get_node_as::<Timer>("StartTimer");
@@ -64,8 +80,7 @@ impl Main {
         self.player.bind_mut().start(start_position.get_position());
         start_timer.start();
 
-        let mut hud = self.base().get_node_as::<Hud>("Hud");
-        let hud = hud.bind_mut();
+        let hud = self.hud.bind_mut();
         hud.update_score(self.score);
         hud.show_message("Get Ready".into());
 
@@ -84,8 +99,7 @@ impl Main {
     fn on_score_timer_timeout(&mut self) {
         self.score += 1;
 
-        let mut hud = self.base().get_node_as::<Hud>("Hud");
-        hud.bind_mut().update_score(self.score);
+        self.hud.bind_mut().update_score(self.score);
     }
 
     #[func]
@@ -117,8 +131,5 @@ impl Main {
         };
 
         mob.set_linear_velocity(Vector2::new(range, 0.0).rotated(real::from_f32(direction)));
-
-        let mut hud = self.base().get_node_as::<Hud>("Hud");
-        hud.connect("start_game", &mob.callable("on_start_game"));
     }
 }
