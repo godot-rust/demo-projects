@@ -5,19 +5,36 @@ use crate::player;
 use godot::classes::{Marker2D, PathFollow2D, RigidBody2D, Timer};
 use godot::prelude::*;
 
-use godot::classes::notify::NodeNotification;
 use rand::Rng as _;
 use std::f32::consts::PI;
 
-// Deriving GodotClass makes the class available to Godot
+// Deriving GodotClass makes the class available to Godot.
 #[derive(GodotClass)]
 #[class(base=Node)]
 pub struct Main {
-    mob_scene: Gd<PackedScene>,
-    music: Option<Gd<AudioStreamPlayer>>,
-    death_sound: Option<Gd<AudioStreamPlayer>>,
+    mob_scene: OnReady<Gd<PackedScene>>,
+    player: OnReady<Gd<player::Player>>,
+    music: OnReady<Gd<AudioStreamPlayer>>,
+    death_sound: OnReady<Gd<AudioStreamPlayer>>,
     score: i64,
     base: Base<Node>,
+}
+
+#[godot_api]
+impl INode for Main {
+    fn init(base: Base<Node>) -> Self {
+        // We could also initialize those manually inside ready(), but OnReady automatically defers initialization.
+        Self {
+            mob_scene: OnReady::new(|| load("res://Mob.tscn")),
+            player: OnReady::node("Player"),
+            music: OnReady::node("Music"),
+            death_sound: OnReady::node("DeathSound"),
+            score: 0,
+            base,
+        }
+    }
+
+    fn ready(&mut self) {}
 }
 
 #[godot_api]
@@ -33,19 +50,18 @@ impl Main {
         let mut hud = self.base().get_node_as::<Hud>("Hud");
         hud.bind_mut().show_game_over();
 
-        self.music().stop();
-        self.death_sound().play();
+        self.music.stop();
+        self.death_sound.play();
     }
 
     #[func]
     pub fn new_game(&mut self) {
         let start_position = self.base().get_node_as::<Marker2D>("StartPosition");
-        let mut player = self.base().get_node_as::<player::Player>("Player");
         let mut start_timer = self.base().get_node_as::<Timer>("StartTimer");
 
         self.score = 0;
 
-        player.bind_mut().start(start_position.get_position());
+        self.player.bind_mut().start(start_position.get_position());
         start_timer.start();
 
         let mut hud = self.base().get_node_as::<Hud>("Hud");
@@ -53,7 +69,7 @@ impl Main {
         hud.update_score(self.score);
         hud.show_message("Get Ready".into());
 
-        self.music().play();
+        self.music.play();
     }
 
     #[func]
@@ -104,37 +120,5 @@ impl Main {
 
         let mut hud = self.base().get_node_as::<Hud>("Hud");
         hud.connect("start_game", &mob.callable("on_start_game"));
-    }
-
-    fn music(&mut self) -> &mut AudioStreamPlayer {
-        self.music.as_deref_mut().unwrap()
-    }
-
-    fn death_sound(&mut self) -> &mut AudioStreamPlayer {
-        self.death_sound.as_deref_mut().unwrap()
-    }
-}
-
-#[godot_api]
-impl INode for Main {
-    fn on_notification(&mut self, _what: NodeNotification) {}
-
-    fn init(base: Base<Node>) -> Self {
-        Main {
-            mob_scene: PackedScene::new_gd(),
-            score: 0,
-            base,
-            music: None,
-            death_sound: None,
-        }
-    }
-
-    fn ready(&mut self) {
-        // Note: this is downcast during load() -- completely type-safe thanks to type inference!
-        // If the resource does not exist or has an incompatible type, this panics.
-        // There is also try_load() if you want to check whether loading succeeded.
-        self.mob_scene = load("res://Mob.tscn");
-        self.music = Some(self.base().get_node_as("Music"));
-        self.death_sound = Some(self.base().get_node_as("DeathSound"));
     }
 }
