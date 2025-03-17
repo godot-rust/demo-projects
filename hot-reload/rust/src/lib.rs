@@ -22,9 +22,11 @@ unsafe impl ExtensionLibrary for HotReload {
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 
+/// A RustDoc comment appearing under the editor help docs.
 #[derive(GodotClass)]
 #[class(base=Node)]
 struct Reloadable {
+    /// A planet!
     #[export]
     favorite_planet: Planet,
     //
@@ -46,11 +48,14 @@ impl INode for Reloadable {
 
 #[godot_api]
 impl Reloadable {
-    #[rustfmt::skip] // easier replacement by test.
+    /// A function to return a number.
     #[func]
-    // HOT-RELOAD: change returned value for dynamic code change.
-    fn get_number(&self) -> i64 { 100 }
+    fn get_number(&self) -> i64 {
+        // HOT-RELOAD: change returned value for dynamic code change.
+        100
+    }
 
+    /// Constructor from a string.
     #[func]
     fn from_string(s: GString) -> Gd<Self> {
         Gd::from_object(Reloadable {
@@ -61,6 +66,7 @@ impl Reloadable {
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 
+/// A planet enum.
 #[derive(GodotConvert, Var, Export)]
 #[godot(via = GString)]
 enum Planet {
