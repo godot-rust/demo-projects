@@ -23,12 +23,14 @@ pub struct Main {
 impl INode for Main {
     fn init(base: Base<Node>) -> Self {
         // We could also initialize those manually inside ready(), but OnReady automatically defers initialization.
+        // Alternatively to init(), you can use #[init(...)] on the struct fields.
         Self {
-            mob_scene: OnReady::new(|| load("res://Mob.tscn")),
-            player: OnReady::node("Player"),
-            hud: OnReady::node("Hud"),
-            music: OnReady::node("Music"),
-            death_sound: OnReady::node("DeathSound"),
+            // OnReady::from_loaded(path) == OnReady::new(|| tools::load(path)).
+            mob_scene: OnReady::from_loaded("res://Mob.tscn"),
+            player: OnReady::from_node("Player"),
+            hud: OnReady::from_node("Hud"),
+            music: OnReady::from_node("Music"),
+            death_sound: OnReady::from_node("DeathSound"),
             score: 0,
             base,
         }
