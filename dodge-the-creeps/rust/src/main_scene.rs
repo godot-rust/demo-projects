@@ -82,7 +82,7 @@ impl Main {
         self.player.bind_mut().start(start_position.get_position());
         start_timer.start();
 
-        let hud = self.hud.bind_mut();
+        let mut hud = self.hud.bind_mut();
         hud.update_score(self.score);
         hud.show_message("Get Ready".into());
 
