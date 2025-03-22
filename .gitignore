@@ -21,7 +21,6 @@ gen
 # Temporary tweaks, remove later
 /script
 *.bat
-config.toml
 exp.rs
 
 # Mac specific
