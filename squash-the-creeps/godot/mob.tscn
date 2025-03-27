@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0jx5lcbm76jf"]
+
+[ext_resource type="PackedScene" uid="uid://or56hj80wrrn" path="res://art/mob.glb" id="1_dy6sc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nokgg"]
+size = Vector3(1.40546, 1.45325, 1.70323)
+
+[sub_resource type="Animation" id="Animation_dy6sc"]
+resource_name = "float"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 0.7),
+"transitions": PackedFloat32Array(0.482968, 2),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.65, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Character:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.5),
+"transitions": PackedFloat32Array(0.267943, 1.62451),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.139626, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nokgg"]
+_data = {
+&"float": SubResource("Animation_dy6sc")
+}
+
+[node name="Mob" type="Mob" groups=["mob"]]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Character" parent="Pivot" instance=ExtResource("1_dy6sc")]
+transform = Transform3D(1, 0, 0, 0, 0.999408, -0.0344105, 0, 0.0344105, 0.999408, 0, 0.423649, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0510979, 0.226624, -0.0277531)
+shape = SubResource("BoxShape3D_nokgg")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+transform = Transform3D(1.55638, 0, 0, 0, 1, 0, 0, 0, 1.86618, 0, 0, 0)
+visible = false
+aabb = AABB(-0.857277, -1, -1.03447, 1.71455, 2, 2.06894)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_nokgg")
+}
+autoplay = "float"
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="on_visible_on_screen_notifier_3d_screen_exited"]
