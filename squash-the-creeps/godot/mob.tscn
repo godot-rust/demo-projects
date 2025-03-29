@@ -40,6 +40,8 @@ _data = {
 }
 
 [node name="Mob" type="Mob" groups=["mob"]]
+min_speed = 10.0
+max_speed = 18.0
 collision_layer = 2
 collision_mask = 0
 

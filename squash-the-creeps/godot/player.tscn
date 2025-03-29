@@ -73,6 +73,10 @@ _data = {
 }
 
 [node name="Player" type="Player"]
+speed = 14.0
+jump_impulse = 20.0
+bounce_impulse = 16.0
+fall_acceleration = 75.0
 collision_mask = 6
 
 [node name="Pivot" type="Node3D" parent="."]

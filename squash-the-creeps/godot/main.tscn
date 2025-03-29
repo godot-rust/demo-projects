@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://b70g8epauqibi"]
+[gd_scene load_steps=10 format=3 uid="uid://b70g8epauqibi"]
 
+[ext_resource type="PackedScene" uid="uid://d0jx5lcbm76jf" path="res://mob.tscn" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://bvlv4saytitbk" path="res://player.tscn" id="1_ig7tw"]
 [ext_resource type="FontFile" uid="uid://dl270v4sovdki" path="res://fonts/Montserrat-Medium.ttf" id="2_0xm2m"]
 
@@ -28,6 +29,7 @@ default_font = ExtResource("2_0xm2m")
 default_font_size = 22
 
 [node name="Main" type="MainScene"]
+mob_scene = ExtResource("1_h2yge")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
@@ -89,6 +91,7 @@ wait_time = 0.5
 autostart = true
 
 [node name="UserInterface" type="UserInterface" parent="."]
+physics_interpolation_mode = 0
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -106,8 +109,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Score: 0"
 
 [node name="Retry" type="ColorRect" parent="UserInterface"]
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -129,5 +131,4 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Press enter retry"
 
-[connection signal="hit" from="Player" to="." method="on_player_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="on_mob_timer_timeout"]
