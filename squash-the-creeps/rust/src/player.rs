@@ -10,21 +10,25 @@ use std::f32::consts::FRAC_PI_6;
 #[derive(GodotClass)]
 #[class(init, base=CharacterBody3D)]
 pub struct Player {
-    // How fast the player moves in meters per second.
-    #[init(val = 14.0)]
+    /// How fast the player moves in meters per second.
+    #[export]
     speed: f32,
-    // Vertical impulse applied to the character upon jumping in meters per second.
-    #[init(val = 20.0)]
-    jump_impulse: f32,
-    // Vertical impulse applied to the character upon bouncing over a mob in meters per second.
-    #[init(val = 16.0)]
-    bounce_impulse: f32,
-    // The downward acceleration when in the air, in meters per second.
-    #[init(val = 75.0)]
-    fall_acceleration: f32,
-    // The target velocity of the character (node property)
-    target_velocity: Vector3,
 
+    /// Vertical impulse applied to the character upon jumping in meters per second.
+    #[export]
+    jump_impulse: f32,
+
+    /// Vertical impulse applied to the character upon bouncing over a mob in meters per second.
+    #[export]
+    bounce_impulse: f32,
+
+    /// The downward acceleration when in the air, in meters per second.
+    #[export]
+    fall_acceleration: f32,
+    
+    /// The target velocity of the character (node property)
+    #[export]
+    target_velocity: Vector3,
     base: Base<CharacterBody3D>,
 }
 #[godot_api]
@@ -172,7 +176,7 @@ impl Player {
             .base()
             .get_node_as::<CollisionShape3D>("CollisionShape3D");
         collision_shape.set_deferred("disabled", &true.to_variant());
-        
+
         // die()
         self.die();
     }
