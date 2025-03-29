@@ -10,11 +10,11 @@ use godot::prelude::*;
 use rand::Rng;
 
 // Deriving GodotClass makes the class available to Godot.
-//extends Node
+// extends Node
 #[derive(GodotClass)]
 #[class(init, base=Node)]
 pub struct MainScene {
-    //@export var mob_scene: PackedScene
+    // @export var mob_scene: PackedScene
     #[export]
     mob_scene: OnEditor<Gd<PackedScene>>,
 
@@ -35,21 +35,21 @@ impl INode for MainScene {
 
     fn ready(&mut self) {
 
-        //$UserInterface/Retry.hide()
+        // $UserInterface/Retry.hide()
         self.base()
             .get_node_as::<ColorRect>("UserInterface/Retry")
             .hide();
     }
     fn unhandled_input(&mut self, event: Gd<InputEvent>) {
-        //if event.is_action_pressed("ui_accept") and $UserInterface/Retry.visible:
+        // if event.is_action_pressed("ui_accept") and $UserInterface/Retry.visible:
         if event.is_action_pressed("ui_accept")
             && self
                 .base()
                 .get_node_as::<ColorRect>("UserInterface/Retry")
                 .is_visible()
         {
-            //warning-ignore:return_value_discarded
-            //get_tree().reload_current_scene()
+            // warning-ignore:return_value_discarded
+            // get_tree().reload_current_scene()
             self.base().get_tree().unwrap().reload_current_scene();
         }
     }
@@ -64,7 +64,7 @@ impl MainScene {
             .base()
             .get_node_as::<PathFollow3D>("SpawnPath/SpawnLocation");
 
-        //Choose a random location on the SpawnPath.
+        // Choose a random location on the SpawnPath.
         // Set random progress using proper rng
         // mob_spawn_location.progress_ratio = randf()
         mob_spawn_location.set_progress_ratio(rand::rng().random_range(0.0..=1.0));
@@ -76,7 +76,7 @@ impl MainScene {
         // mob.initialize(mob_spawn_location.position, player_position)
         mob.bind_mut()
             .initialize(mob_spawn_location.get_position(), player_position);
-        //mob.squashed.connect($UserInterface/ScoreLabel._on_mob_squashed.bind())
+        // mob.squashed.connect($UserInterface/ScoreLabel._on_mob_squashed.bind())
         mob.connect(
             "squashed",
             &mut self.user_interface.callable("on_mob_squashed").bind(&[]),
@@ -88,9 +88,9 @@ impl MainScene {
 
     #[func]
     pub fn on_player_hit(&mut self) {
-        //$MobTimer.stop()
+        // $MobTimer.stop()
         self.mob_timer.stop();
-        //$UserInterface/Retry.show()
+        // $UserInterface/Retry.show()
         self.base()
             .get_node_as::<ColorRect>("UserInterface/Retry")
             .show();
