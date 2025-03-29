@@ -55,6 +55,22 @@ impl INode for MainScene {
 }
 #[godot_api]
 impl MainScene {
+
+    /* TODO:
+        At this moment this function does not work.
+        Godot logs raise an error like this:
+        E 0:00:18:371   godot_core::private::set_gdext_hook::{{closure}}: 
+        Player::upcast_ref: access to instance with ID 30970742150 after it has been freed
+        Context: MainScene::on_mob_timer_timeout
+        <C++ Source> 
+
+        E 0:00:18:371   godot_core::private::report_call_error: godot-rust function call failed: MainScene::on_mob_timer_timeout()
+        Reason: function panicked: Player::upcast_ref: access to instance with ID 30970742150 after it has been freed
+        <C++ Source>  C:\Users\frank\.cargo\git\checkouts\gdext-067f4b88e7bd088f\6e21024\godot-core\src\private.rs:455 @ godot_core::private::report_call_error()
+
+        E 0:00:18:371   emit_signalp: Error calling from signal 'timeout' to callable: 'MainScene::on_mob_timer_timeout': .
+        <C++ Source>  core/object/object.cpp:1249 @ emit_signalp()
+     */
     #[func]
     fn on_mob_timer_timeout(&mut self) {
         // Create mob instance
