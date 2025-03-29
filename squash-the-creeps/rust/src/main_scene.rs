@@ -12,29 +12,26 @@ use rand::Rng;
 // Deriving GodotClass makes the class available to Godot.
 //extends Node
 #[derive(GodotClass)]
-#[class(base=Node)]
+#[class(init, base=Node)]
 pub struct MainScene {
     //@export var mob_scene: PackedScene
     #[export]
     mob_scene: OnEditor<Gd<PackedScene>>,
+
+    #[init(node = "Player")]
     player: OnReady<Gd<player::Player>>,
+
+    #[init(node = "MobTimer")]
     mob_timer: OnReady<Gd<Timer>>,
+
+    #[init(node = "UserInterface")]
     user_interface: OnReady<Gd<scorelabel::UserInterface>>,
+    
     base: Base<Node>,
 }
 
 #[godot_api]
 impl INode for MainScene {
-    fn init(base: Base<Node>) -> Self {
-        godot_print!("MainScene initialized");
-        Self {
-            mob_scene: OnEditor::default(),
-            player: OnReady::from_node("Player"),
-            mob_timer: OnReady::from_node("MobTimer"),
-            user_interface: OnReady::from_node("UserInterface"),
-            base,
-        }
-    }
 
     fn ready(&mut self) {
         self.to_gd();
