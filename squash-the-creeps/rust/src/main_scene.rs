@@ -26,7 +26,7 @@ pub struct MainScene {
 
     #[init(node = "UserInterface")]
     user_interface: OnReady<Gd<scorelabel::UserInterface>>,
-    
+
     base: Base<Node>,
 }
 
@@ -34,7 +34,6 @@ pub struct MainScene {
 impl INode for MainScene {
 
     fn ready(&mut self) {
-        self.to_gd();
 
         //$UserInterface/Retry.hide()
         self.base()
