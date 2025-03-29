@@ -98,7 +98,7 @@ impl MainScene {
         // mob.squashed.connect($UserInterface/ScoreLabel._on_mob_squashed.bind())
         mob.connect(
             "squashed",
-            &mut self.user_interface.callable("on_mob_squashed"),
+            &self.user_interface.callable("on_mob_squashed"),
         );
 
         // add_child(mob)
