@@ -3,6 +3,7 @@ use godot::classes::AnimationPlayer;
 use godot::classes::CharacterBody3D;
 use godot::classes::CollisionShape3D;
 use godot::classes::ICharacterBody3D;
+use godot::classes::Input;
 use godot::prelude::*;
 use std::f32::consts::FRAC_PI_6;
 
