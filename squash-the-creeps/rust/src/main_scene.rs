@@ -14,7 +14,7 @@ use rand::Rng;
 #[derive(GodotClass)]
 #[class(init, base=Node)]
 pub struct MainScene {
-    // @export var mob_scene: PackedScene
+    // export(PackedScene) var mob_scene
     #[export]
     mob_scene: OnEditor<Gd<PackedScene>>,
 
@@ -34,7 +34,6 @@ pub struct MainScene {
 impl INode for MainScene {
 
     fn ready(&mut self) {
-
         // $UserInterface/Retry.hide()
         self.base()
             .get_node_as::<ColorRect>("UserInterface/Retry")

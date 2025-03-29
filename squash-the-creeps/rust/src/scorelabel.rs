@@ -1,21 +1,12 @@
 use godot::classes::Control;
-use godot::classes::IControl;
 use godot::classes::Label;
 use godot::prelude::*;
 
 #[derive(GodotClass)]
-#[class(base=Control)]
+#[class(init, base=Control)]
 pub struct UserInterface {
     score: f32,
     base: Base<Control>,
-}
-
-#[godot_api]
-impl IControl for UserInterface {
-    fn init(base: Base<Control>) -> Self {
-        godot_print!("ScoreLabel initialized");
-        Self { score: 0.0, base }
-    }
 }
 
 #[godot_api]
