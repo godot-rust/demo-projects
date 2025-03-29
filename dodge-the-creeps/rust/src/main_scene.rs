@@ -1,6 +1,6 @@
 use crate::{hud, mob, player};
 
-use godot::classes::{Marker2D, PathFollow2D, RigidBody2D, Timer};
+use godot::classes::{AudioStreamPlayer, Marker2D, PathFollow2D, RigidBody2D, Timer};
 use godot::prelude::*;
 
 use rand::Rng as _;

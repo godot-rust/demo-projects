@@ -1,4 +1,4 @@
-use godot::classes::{AnimatedSprite2D, Area2D, CollisionShape2D, IArea2D, PhysicsBody2D};
+use godot::classes::{AnimatedSprite2D, Area2D, CollisionShape2D, IArea2D, Input, PhysicsBody2D};
 use godot::prelude::*;
 
 #[derive(GodotClass)]
