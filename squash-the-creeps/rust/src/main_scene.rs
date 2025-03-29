@@ -15,7 +15,8 @@ use rand::Rng;
 #[class(base=Node)]
 pub struct MainScene {
     //@export var mob_scene: PackedScene
-    mob_scene: OnReady<Gd<PackedScene>>,
+    #[export]
+    mob_scene: OnEditor<Gd<PackedScene>>,
     player: OnReady<Gd<player::Player>>,
     mob_timer: OnReady<Gd<Timer>>,
     user_interface: OnReady<Gd<scorelabel::UserInterface>>,
@@ -27,7 +28,7 @@ impl INode for MainScene {
     fn init(base: Base<Node>) -> Self {
         godot_print!("MainScene initialized");
         Self {
-            mob_scene: OnReady::from_loaded("res://mob.tscn"),
+            mob_scene: OnEditor::default(),
             player: OnReady::from_node("Player"),
             mob_timer: OnReady::from_node("MobTimer"),
             user_interface: OnReady::from_node("UserInterface"),
