@@ -46,7 +46,7 @@ collision_mask = 0
 [node name="Pivot" type="Node3D" parent="."]
 
 [node name="Character" parent="Pivot" instance=ExtResource("1_dy6sc")]
-transform = Transform3D(1, 0, 0, 0, 0.999408, -0.0344105, 0, 0.0344105, 0.999408, 0, 0.423649, 0)
+transform = Transform3D(1, 0, 0, 0, 0.99963, -0.0272248, 0, 0.0272248, 0.99963, 0, 0.396094, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0510979, 0.226624, -0.0277531)

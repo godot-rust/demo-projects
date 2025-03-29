@@ -9,10 +9,10 @@ use std::f32::consts::PI;
 #[class(init, base=CharacterBody3D)]
 pub struct Mob {
     // Minimum speed of the mob in meters per second.
-    #[init(val = 10.0)]
+    #[export]
     min_speed: f32,
     // Maximum speed of the mob in meters per second.
-    #[init(val = 18.0)]
+    #[export]
     max_speed: f32,
     base: Base<CharacterBody3D>,
 }
