@@ -6,27 +6,20 @@ use rand::Rng;
 use std::f32::consts::PI;
 
 #[derive(GodotClass)]
-#[class(base=CharacterBody3D)]
+#[class(init, base=CharacterBody3D)]
 pub struct Mob {
     // Minimum speed of the mob in meters per second.
+    #[init(val = 10.0)]
     min_speed: f32,
     // Maximum speed of the mob in meters per second.
+    #[init(val = 18.0)]
     max_speed: f32,
     base: Base<CharacterBody3D>,
 }
 
 #[godot_api]
 impl ICharacterBody3D for Mob {
-    fn init(base: Base<CharacterBody3D>) -> Self {
-        // godot_print!("Mob initialized");
-        Self {
-            // @export var min_speed = 10
-            min_speed: 10.0,
-            // @export var max_speed = 18
-            max_speed: 18.0,
-            base,
-        }
-    }
+    
     fn physics_process(&mut self, _delta: f64) {
         // move_and_slide()
         self.base_mut().move_and_slide();

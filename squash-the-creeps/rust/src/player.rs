@@ -8,15 +8,19 @@ use godot::prelude::*;
 use std::f32::consts::FRAC_PI_6;
 
 #[derive(GodotClass)]
-#[class(base=CharacterBody3D)]
+#[class(init, base=CharacterBody3D)]
 pub struct Player {
     // How fast the player moves in meters per second.
+    #[init(val = 14.0)]
     speed: f32,
     // Vertical impulse applied to the character upon jumping in meters per second.
+    #[init(val = 20.0)]
     jump_impulse: f32,
     // Vertical impulse applied to the character upon bouncing over a mob in meters per second.
+    #[init(val = 16.0)]
     bounce_impulse: f32,
     // The downward acceleration when in the air, in meters per second.
+    #[init(val = 75.0)]
     fall_acceleration: f32,
     // The target velocity of the character (node property)
     target_velocity: Vector3,
@@ -25,23 +29,7 @@ pub struct Player {
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
-    fn init(base: Base<CharacterBody3D>) -> Self {
-        godot_print!("Player initialized");
-        Self {
-            // @export var speed = 14
-            speed: 14.0,
-            // @export var jump_impulse = 20
-            jump_impulse: 20.0,
-            // @export var bounce_impulse = 16
-            bounce_impulse: 16.0,
-            // @export var fall_acceleration = 75
-            fall_acceleration: 75.0,
-            // set it to zero
-            target_velocity: Vector3::ZERO,
-            base,
-        }
-    }
-
+    
     fn physics_process(&mut self, _delta: f64) {
         /*Here, instead of _process(), we're going to make all
         calculations using the _physics_process() virtual function.
