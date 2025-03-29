@@ -125,7 +125,7 @@ impl ICharacterBody3D for Player {
 
             // if collision.get_collider().is_in_group("mob"):
             if let Some(collider) = collision.get_collider() {
-                if let Some(node) = collider.try_cast::<Node3D>().ok() {
+                if let Ok(node) = collider.try_cast::<Node3D>() {
                     if node.is_in_group("mob") {
                         // var mob = collision.get_collider()
                         let mut mob = collision.get_collider().unwrap().cast::<Mob>();
