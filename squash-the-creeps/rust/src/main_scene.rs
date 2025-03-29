@@ -67,14 +67,18 @@ impl MainScene {
         // Set random progress using proper rng
         // mob_spawn_location.progress_ratio = randf()
         mob_spawn_location.set_progress_ratio(rand::rng().random_range(0.0..=1.0));
+
         // Communicate the spawn location and the player's location to the mob.
-        //var player_position = $Player.position
+        // var player_position = $Player.position
         let player_position = self.player.get_position();
+
         // var mob = mob_scene.instantiate()
         let mut mob = self.mob_scene.instantiate_as::<mob::Mob>();
+
         // mob.initialize(mob_spawn_location.position, player_position)
         mob.bind_mut()
             .initialize(mob_spawn_location.get_position(), player_position);
+        
         // mob.squashed.connect($UserInterface/ScoreLabel._on_mob_squashed.bind())
         mob.connect(
             "squashed",

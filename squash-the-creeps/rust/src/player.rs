@@ -83,10 +83,10 @@ impl ICharacterBody3D for Player {
                 .get_node_as::<AnimationPlayer>("AnimationPlayer")
                 .set_speed_scale(1.0);
         }
-
         // Ground Velocity
         // velocity.x = direction.x * speed
         self.target_velocity.x = direction.x * self.speed;
+
         //velocity.z = direction.z * speed
         self.target_velocity.z = direction.z * self.speed;
 
@@ -96,7 +96,6 @@ impl ICharacterBody3D for Player {
             //velocity.y += jump_impulse
             self.target_velocity.y = self.jump_impulse;
         }
-
         // We apply gravity every frame so the character always collides with the ground when moving.
         // This is necessary for the is_on_floor() function to work as a body can always detect
         // the floor, walls, etc. when a collision happens the same frame.
@@ -119,18 +118,22 @@ impl ICharacterBody3D for Player {
         for index in 0..self.base().get_slide_collision_count() {
             // var collision = get_slide_collision(index)
             let collision = self.base_mut().get_slide_collision(index).unwrap();
+
             // if collision.get_collider().is_in_group("mob"):
             if let Some(collider) = collision.get_collider() {
                 if let Some(node) = collider.try_cast::<Node3D>().ok() {
                     if node.is_in_group("mob") {
                         // var mob = collision.get_collider()
                         let mut mob = collision.get_collider().unwrap().cast::<Mob>();
+
                         // if Vector3.UP.dot(collision.get_normal()) > 0.1:
                         if Vector3::UP.dot(collision.get_normal()) > 0.1 {
                             // mob.squash()
                             mob.bind_mut().squash();
+
                             // velocity.y = bounce_impulse
                             self.target_velocity.y = self.bounce_impulse;
+
                             // Prevent this block from running more than once,
                             // which would award the player more than 1 point for squashing a single mob.
                             break;
@@ -158,6 +161,7 @@ impl Player {
     pub fn die(&mut self) {
         // hit.emit()
         self.signals().hit().emit();
+
         // queue_free()
         self.base_mut().queue_free();
     }
@@ -168,6 +172,7 @@ impl Player {
             .base()
             .get_node_as::<CollisionShape3D>("CollisionShape3D");
         collision_shape.set_deferred("disabled", &true.to_variant());
+        
         // die()
         self.die();
     }
