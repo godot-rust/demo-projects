@@ -4,7 +4,7 @@ mod player;
 mod scorelabel;
 use godot::prelude::*;
 
-struct Scripts;
+struct SquashTheCreeps;
 
 #[gdextension]
-unsafe impl ExtensionLibrary for Scripts {}
+unsafe impl ExtensionLibrary for SquashTheCreeps {}
