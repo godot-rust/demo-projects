@@ -18,9 +18,6 @@ pub struct MainScene {
     #[export]
     mob_scene: OnEditor<Gd<PackedScene>>,
 
-    #[init(node = "Player")]
-    player: OnReady<Gd<player::Player>>,
-
     #[init(node = "MobTimer")]
     mob_timer: OnReady<Gd<Timer>>,
 
@@ -38,6 +35,7 @@ impl INode for MainScene {
         self.base()
             .get_node_as::<ColorRect>("UserInterface/Retry")
             .hide();
+
     }
     fn unhandled_input(&mut self, event: Gd<InputEvent>) {
         // if event.is_action_pressed("ui_accept") and $UserInterface/Retry.visible:
@@ -56,21 +54,6 @@ impl INode for MainScene {
 #[godot_api]
 impl MainScene {
 
-    /* TODO:
-        At this moment this function does not work.
-        Godot logs raise an error like this:
-        E 0:00:18:371   godot_core::private::set_gdext_hook::{{closure}}: 
-        Player::upcast_ref: access to instance with ID 30970742150 after it has been freed
-        Context: MainScene::on_mob_timer_timeout
-        <C++ Source> 
-
-        E 0:00:18:371   godot_core::private::report_call_error: godot-rust function call failed: MainScene::on_mob_timer_timeout()
-        Reason: function panicked: Player::upcast_ref: access to instance with ID 30970742150 after it has been freed
-        <C++ Source>  C:\Users\frank\.cargo\git\checkouts\gdext-067f4b88e7bd088f\6e21024\godot-core\src\private.rs:455 @ godot_core::private::report_call_error()
-
-        E 0:00:18:371   emit_signalp: Error calling from signal 'timeout' to callable: 'MainScene::on_mob_timer_timeout': .
-        <C++ Source>  core/object/object.cpp:1249 @ emit_signalp()
-     */
     #[func]
     fn on_mob_timer_timeout(&mut self) {
         // Create mob instance
@@ -86,7 +69,7 @@ impl MainScene {
 
         // Communicate the spawn location and the player's location to the mob.
         // var player_position = $Player.position
-        let player_position = self.player.get_position();
+        let player_position = self.base().get_node_as::<player::Player>("Player").get_position();
 
         // var mob = mob_scene.instantiate()
         let mut mob = self.mob_scene.instantiate_as::<mob::Mob>();
