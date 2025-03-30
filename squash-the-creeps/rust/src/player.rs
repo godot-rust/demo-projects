@@ -25,7 +25,7 @@ pub struct Player {
     /// The downward acceleration when in the air, in meters per second.
     #[export]
     fall_acceleration: f32,
-    
+
     /// The target velocity of the character (node property)
     #[export]
     target_velocity: Vector3,
@@ -33,7 +33,6 @@ pub struct Player {
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
-    
     fn physics_process(&mut self, _delta: f64) {
         /*Here, instead of _process(), we're going to make all
         calculations using the _physics_process() virtual function.
@@ -45,7 +44,7 @@ impl ICharacterBody3D for Player {
         let mut direction = Vector3::ZERO;
 
         let input = Input::singleton();
- 
+
         // if Input.is_action_pressed("move_right"):
         if input.is_action_pressed("move_right") {
             //direction.x += 1

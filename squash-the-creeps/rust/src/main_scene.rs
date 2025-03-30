@@ -29,13 +29,11 @@ pub struct MainScene {
 
 #[godot_api]
 impl INode for MainScene {
-
     fn ready(&mut self) {
         // $UserInterface/Retry.hide()
         self.base()
             .get_node_as::<ColorRect>("UserInterface/Retry")
             .hide();
-
     }
     fn unhandled_input(&mut self, event: Gd<InputEvent>) {
         // if event.is_action_pressed("ui_accept") and $UserInterface/Retry.visible:
@@ -53,7 +51,6 @@ impl INode for MainScene {
 }
 #[godot_api]
 impl MainScene {
-
     #[func]
     fn on_mob_timer_timeout(&mut self) {
         // Create mob instance
@@ -69,7 +66,10 @@ impl MainScene {
 
         // Communicate the spawn location and the player's location to the mob.
         // var player_position = $Player.position
-        let player_position = self.base().get_node_as::<player::Player>("Player").get_position();
+        let player_position = self
+            .base()
+            .get_node_as::<player::Player>("Player")
+            .get_position();
 
         // var mob = mob_scene.instantiate()
         let mut mob = self.mob_scene.instantiate_as::<mob::Mob>();
@@ -77,12 +77,9 @@ impl MainScene {
         // mob.initialize(mob_spawn_location.position, player_position)
         mob.bind_mut()
             .initialize(mob_spawn_location.get_position(), player_position);
-        
+
         // mob.squashed.connect($UserInterface/ScoreLabel._on_mob_squashed.bind())
-        mob.connect(
-            "squashed",
-            &self.user_interface.callable("on_mob_squashed"),
-        );
+        mob.connect("squashed", &self.user_interface.callable("on_mob_squashed"));
 
         // add_child(mob)
         self.base_mut().add_child(&mob);

@@ -19,7 +19,6 @@ pub struct Mob {
 
 #[godot_api]
 impl ICharacterBody3D for Mob {
-    
     fn physics_process(&mut self, _delta: f64) {
         // move_and_slide()
         self.base_mut().move_and_slide();
@@ -68,7 +67,7 @@ impl Mob {
     pub fn squash(&mut self) {
         // squashed.emit()
         self.signals().squashed().emit();
-        
+
         // queue_free()
         self.base_mut().queue_free();
     }
