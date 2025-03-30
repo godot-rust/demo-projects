@@ -11,12 +11,12 @@ struct HotReload;
 
 #[gdextension]
 unsafe impl ExtensionLibrary for HotReload {
-    fn on_level_init(_level: InitLevel) {
-        println!("[Rust]      Init level {:?}", _level);
+    fn on_level_init(level: InitLevel) {
+        println!("[Rust]   Init level {level:?}");
     }
 
-    fn on_level_deinit(_level: InitLevel) {
-        println!("[Rust]      Deinit level {:?}", _level);
+    fn on_level_deinit(level: InitLevel) {
+        println!("[Rust]   Deinit level {level:?}");
     }
 }
 
@@ -24,26 +24,16 @@ unsafe impl ExtensionLibrary for HotReload {
 
 /// A RustDoc comment appearing under the editor help docs.
 #[derive(GodotClass)]
-#[class(base=Node)]
+#[class(init, base=Node)]
 struct Reloadable {
     /// A planet!
     #[export]
+    #[init(val = Planet::Earth)]
     favorite_planet: Planet,
     //
     // HOT-RELOAD: uncomment this to add a new exported field (also update init() below).
     // #[export]
     // some_string: GString,
-}
-
-#[godot_api]
-impl INode for Reloadable {
-    fn init(_base: Base<Self::Base>) -> Self {
-        // HOT-RELOAD: change values to initialize with different defaults.
-        Self {
-            favorite_planet: Planet::Earth,
-            //some_string: "Hello, world!".into(),
-        }
-    }
 }
 
 #[godot_api]
@@ -55,19 +45,18 @@ impl Reloadable {
         100
     }
 
-    /// Constructor from a string.
+    // HOT-RELOAD: uncomment to make new function accessible.
+
     #[func]
-    fn from_string(s: GString) -> Gd<Self> {
-        Gd::from_object(Reloadable {
-            favorite_planet: Planet::from_godot(s),
-        })
+    fn get_planet(&self) -> Planet {
+        self.favorite_planet
     }
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 
 /// A planet enum.
-#[derive(GodotConvert, Var, Export)]
+#[derive(GodotConvert, Var, Export, Copy, Clone, Debug)]
 #[godot(via = GString)]
 enum Planet {
     Earth,
