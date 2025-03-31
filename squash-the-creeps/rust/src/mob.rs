@@ -1,6 +1,4 @@
-use godot::classes::AnimationPlayer;
-use godot::classes::CharacterBody3D;
-use godot::classes::ICharacterBody3D;
+use godot::classes::{AnimationPlayer, CharacterBody3D, ICharacterBody3D};
 use godot::prelude::*;
 use rand::Rng;
 use std::f32::consts::PI;
