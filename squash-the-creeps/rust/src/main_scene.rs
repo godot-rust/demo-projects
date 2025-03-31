@@ -43,13 +43,13 @@ impl INode for MainScene {
 impl MainScene {
     #[func]
     fn on_mob_timer_timeout(&mut self) {
-        // Create mob instance
+        // Create mob instance.
         let mut mob_spawn_location = self
             .base()
             .get_node_as::<PathFollow3D>("SpawnPath/SpawnLocation");
 
         // Choose a random location on the SpawnPath.
-        // Set random progress using proper rng
+        // Set random progress using proper rng.
         mob_spawn_location.set_progress_ratio(rand::rng().random_range(0.0..=1.0));
 
         // Communicate the spawn location and the player's location to the mob.

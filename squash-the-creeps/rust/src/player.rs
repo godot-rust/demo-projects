@@ -51,10 +51,10 @@ impl ICharacterBody3D for Player {
             // In the lines below, we turn the character when moving and make the animation play faster.
             direction = direction.normalized();
 
-            // take the pivot node and rotate it to face the direction we're moving in
+            // Take the pivot node and rotate it to face the direction we're moving in.
             let mut pivot = self.base_mut().get_node_as::<Node3D>("Pivot");
 
-            // Setting the basis property will affect the rotation of the node
+            // Setting the basis property will affect the rotation of the node.
             pivot.set_basis(Basis::looking_at(-direction, Vector3::UP, true));
             self.base()
                 .get_node_as::<AnimationPlayer>("AnimationPlayer")
@@ -64,11 +64,11 @@ impl ICharacterBody3D for Player {
                 .get_node_as::<AnimationPlayer>("AnimationPlayer")
                 .set_speed_scale(1.0);
         }
-        // Ground Velocity
+        // Ground Velocity.
         self.target_velocity.x = direction.x * self.speed;
         self.target_velocity.z = direction.z * self.speed;
 
-        // jumping
+        // jumping.
         if self.base().is_on_floor() && input.is_action_just_pressed("jump") {
             self.target_velocity.y = self.jump_impulse;
         }
@@ -106,7 +106,7 @@ impl ICharacterBody3D for Player {
                 }
             }
         }
-        // This makes the character follow a nice arc when jumping
+        // This makes the character follow a nice arc when jumping.
         let mut pivot = self.base().get_node_as::<Node3D>("Pivot");
         let mut pivot_rotation = pivot.get_rotation();
         pivot_rotation.x = FRAC_PI_6 * self.base().get_velocity().y / self.jump_impulse;
