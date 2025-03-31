@@ -4,7 +4,7 @@
 # targets: https://github.com/rust-lang/cargo/issues/8733
 [target.wasm32-unknown-emscripten]
 rustflags = [
-    "-C", "link-args=-pthread", # assumes threads enabled.
+    "-C", "link-args=-pthread", # /!\ Read 'Thread support' below regarding this flag
     "-C", "link-args=-sSIDE_MODULE=2",
     "-C", "target-feature=+atomics,+bulk-memory,+mutable-globals",
     "-Zlink-native-libraries=no",
