@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Must be in dodge-the-creep's rust directory in order to pick up the .cargo/config
+# Must be in squash-the-creep's rust directory in order to pick up the .cargo/config
 cd `dirname "$0"`
 
 # We build the host gdextension first so that the godot editor doesn't complain.
