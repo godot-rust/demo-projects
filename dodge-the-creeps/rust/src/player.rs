@@ -1,4 +1,4 @@
-use godot::classes::{AnimatedSprite2D, Area2D, CollisionShape2D, IArea2D, Input, PhysicsBody2D};
+use godot::classes::{AnimatedSprite2D, Area2D, CollisionShape2D, IArea2D, Input};
 use godot::prelude::*;
 
 #[derive(GodotClass)]
@@ -17,7 +17,7 @@ impl Player {
     pub fn hit();
 
     #[func]
-    fn on_player_body_entered(&mut self, _body: Gd<PhysicsBody2D>) {
+    fn on_player_body_entered(&mut self, _body: Gd<Node2D>) {
         self.base_mut().hide();
         self.signals().hit().emit();
 
@@ -55,6 +55,11 @@ impl IArea2D for Player {
         let viewport = self.base().get_viewport_rect();
         self.screen_size = viewport.size;
         self.base_mut().hide();
+
+        // Signal setup
+        self.signals()
+            .body_entered()
+            .connect_self(Self::on_player_body_entered);
     }
 
     // `delta` can be f32 or f64; #[godot_api] macro converts transparently.

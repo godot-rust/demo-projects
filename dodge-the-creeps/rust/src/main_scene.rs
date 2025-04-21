@@ -53,6 +53,26 @@ impl INode for Main {
             .signals()
             .start_game()
             .connect_obj(&main, Self::new_game);
+
+        // Connect Main.ScoreTimer::timeout -> Main::on_score_timer_timeout.
+        self.score_timer()
+            .signals()
+            .timeout()
+            .connect_obj(&main, Self::on_score_timer_timeout);
+
+        // Connect Main.MobTimer::timeout -> Main::on_mob_timer_timeout.
+        self.mob_timer()
+            .signals()
+            .timeout()
+            .connect_obj(&main, Self::on_mob_timer_timeout);
+
+        // Main.StartTimer::timeout -> Main::on_start_timer_timeout is set up in the Editor's Inspector UI, but could be done here as well,
+        // as follows. Note that signal handlers connected via Rust do not need a #[func] annotation, they can remain entirely visible to Godot.
+        //
+        // self.start_timer()
+        //     .signals()
+        //     .timeout()
+        //     .connect_obj(&main, Self::on_start_timer_timeout);
     }
 }
 
@@ -60,11 +80,8 @@ impl INode for Main {
 impl Main {
     // No #[func] here, this method is directly called from Rust (via type-safe signals).
     fn game_over(&mut self) {
-        let mut score_timer = self.base().get_node_as::<Timer>("ScoreTimer");
-        let mut mob_timer = self.base().get_node_as::<Timer>("MobTimer");
-
-        score_timer.stop();
-        mob_timer.stop();
+        self.score_timer().stop();
+        self.mob_timer().stop();
 
         self.hud.bind_mut().show_game_over();
 
@@ -75,12 +92,11 @@ impl Main {
     // No #[func].
     pub fn new_game(&mut self) {
         let start_position = self.base().get_node_as::<Marker2D>("StartPosition");
-        let mut start_timer = self.base().get_node_as::<Timer>("StartTimer");
 
         self.score = 0;
 
         self.player.bind_mut().start(start_position.get_position());
-        start_timer.start();
+        self.start_timer().start();
 
         let hud = self.hud.bind_mut();
         hud.update_score(self.score);
@@ -89,22 +105,20 @@ impl Main {
         self.music.play();
     }
 
-    #[func]
-    fn on_start_timer_timeout(&self) {
-        let mut mob_timer = self.base().get_node_as::<Timer>("MobTimer");
-        let mut score_timer = self.base().get_node_as::<Timer>("ScoreTimer");
-        mob_timer.start();
-        score_timer.start();
+    #[func] // needed because connected in Editor UI (see ready).
+    fn on_start_timer_timeout(&mut self) {
+        self.mob_timer().start();
+        self.score_timer().start();
     }
 
-    #[func]
+    // No #[func], connected in pure Rust.
     fn on_score_timer_timeout(&mut self) {
         self.score += 1;
 
         self.hud.bind_mut().update_score(self.score);
     }
 
-    #[func]
+    // No #[func], connected in pure Rust.
     fn on_mob_timer_timeout(&mut self) {
         let mut mob_spawn_location = self
             .base()
@@ -133,5 +147,18 @@ impl Main {
         };
 
         mob.set_linear_velocity(Vector2::new(range, 0.0).rotated(real::from_f32(direction)));
+    }
+
+    // These timers could also be stored as OnReady fields, but are now fetched via function for demonstration purposes.
+    fn start_timer(&self) -> Gd<Timer> {
+        self.base().get_node_as::<Timer>("StartTimer")
+    }
+
+    fn score_timer(&self) -> Gd<Timer> {
+        self.base().get_node_as::<Timer>("ScoreTimer")
+    }
+
+    fn mob_timer(&self) -> Gd<Timer> {
+        self.base().get_node_as::<Timer>("MobTimer")
     }
 }
