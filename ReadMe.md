@@ -22,6 +22,9 @@ We currently feature the following demo projects:
 - [**Hot reload**](hot-reload)  
   Showcases how classes and their state can be hot-reloaded in the Godot editor.
 
+- [**Multiplayer bomber**](hot-reload)  
+  A port of godot's [multiplayer bomber demo](https://github.com/godotengine/godot-demo-projects/tree/master/networking/multiplayer_bomber). Showcases how to use basics of godot's abstraction for multiplayer with godot-rust.
+
 
 ## Engine and library versions
 
