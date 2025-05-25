@@ -46,25 +46,25 @@ impl INode for Main {
         self.player
             .signals()
             .hit()
-            .connect_obj(&main, Self::game_over);
+            .connect_other(&main, Self::game_over);
 
         // Connect Hud::start_game -> Main::new_game.
         self.hud
             .signals()
             .start_game()
-            .connect_obj(&main, Self::new_game);
+            .connect_other(&main, Self::new_game);
 
         // Connect Main.ScoreTimer::timeout -> Main::on_score_timer_timeout.
         self.score_timer()
             .signals()
             .timeout()
-            .connect_obj(&main, Self::on_score_timer_timeout);
+            .connect_other(&main, Self::on_score_timer_timeout);
 
         // Connect Main.MobTimer::timeout -> Main::on_mob_timer_timeout.
         self.mob_timer()
             .signals()
             .timeout()
-            .connect_obj(&main, Self::on_mob_timer_timeout);
+            .connect_other(&main, Self::on_mob_timer_timeout);
 
         // Main.StartTimer::timeout -> Main::on_start_timer_timeout is set up in the Editor's Inspector UI, but could be done here as well,
         // as follows. Note that signal handlers connected via Rust do not need a #[func] annotation, they can remain entirely visible to Godot.
@@ -72,7 +72,7 @@ impl INode for Main {
         // self.start_timer()
         //     .signals()
         //     .timeout()
-        //     .connect_obj(&main, Self::on_start_timer_timeout);
+        //     .connect_other(&main, Self::on_start_timer_timeout);
     }
 }
 
