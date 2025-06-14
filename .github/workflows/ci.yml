@@ -152,7 +152,7 @@ jobs:
           # macOS
 
           - name: macos-x86
-            os: macos-13
+            os: macos-15
             artifact-name: macos-x86-nightly
             godot-binary: godot.macos.editor.dev.x86_64
 
