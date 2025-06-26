@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpw46256eirwq"]
+
+[ext_resource type="Texture2D" uid="uid://bjw2yb853klh2" path="res://paddle.png" id="2"]
+
+[sub_resource type="CapsuleShape2D" id="1"]
+radius = 4.78568
+height = 23.6064
+
+[node name="Paddle" type="Paddle" node_paths=PackedStringArray("you_label")]
+you_label = NodePath("You")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2")
+
+[node name="Shape3D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
+
+[node name="You" type="Label" parent="."]
+offset_left = -26.0
+offset_top = -33.0
+offset_right = 27.0
+offset_bottom = -19.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "You"
+
+[connection signal="area_entered" from="." to="." method="_on_paddle_area_enter"]
