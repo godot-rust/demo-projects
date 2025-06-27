@@ -61,10 +61,8 @@ impl IArea2D for Paddle {
             // as possible, even if one of the calls is dropped.
             let args = vslice![self.base().get_position(), self._motion];
             self.base_mut().rpc("set_pos_and_motion", args);
-        } else {
-            if !self._you_hidden {
-                self.you_label.as_mut().unwrap().hide();
-            }
+        } else if !self._you_hidden {
+            self.you_label.as_mut().unwrap().hide();
         }
 
         let translation = Vector2::new(0.0, self._motion * delta as f32);

@@ -11,7 +11,6 @@ use godot::classes::object::ConnectFlags;
 use godot::global::Error;
 use godot::prelude::*;
 
-const SCORE_TO_WIN: i32 = 10;
 const DEFAULT_PORT: i32 = 8910;
 
 #[derive(GodotClass)]
@@ -110,9 +109,8 @@ impl IPanel for Lobby {
             .signals()
             .connected_to_server()
             .builder()
-            .connect_other_mut(&self.to_gd(), |this: &mut Self| {
+            .connect_other_mut(&self.to_gd(), |_this: &mut Self| {
                 // This function is not needed for this project.
-                ()
             });
         multiplayer
             .signals()
