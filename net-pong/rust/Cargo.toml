@@ -2,7 +2,9 @@
 name = "rust"
 version = "1.0.0"
 edition = "2024"
-license = "MIT"
+rust-version = "1.88"
+license = "MPL-2.0"
+publish = false
 
 [dependencies]
 godot = {git = "https://github.com/godot-rust/gdext.git", rev = "18d8a2200cb0bb85b587336ba853db3bb54c9ffa"}
