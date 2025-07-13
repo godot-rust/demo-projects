@@ -1,0 +1,4 @@
+[gd_resource type="Environment" format=2]
+
+[resource]
+ambient_light_color = Color( 0.341176, 0.341176, 0.466667, 1 )
