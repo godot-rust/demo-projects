@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjmldn1x3lpa"]
+
+[ext_resource type="Texture2D" uid="uid://i1imfdcn7ui" path="res://ball.png" id="2"]
+
+[sub_resource type="CircleShape2D" id="1"]
+radius = 5.11969
+
+[node name="Ball" type="Ball"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2")
+
+[node name="Shape3D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
