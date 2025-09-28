@@ -180,9 +180,9 @@ jobs:
             artifact-name: linux-nightly
             godot-binary: godot.linuxbsd.editor.dev.x86_64
 
-          - name: linux-4.4
+          - name: linux-4.5
             os: ubuntu-22.04
-            artifact-name: linux-4.4
+            artifact-name: linux-4.5
             godot-binary: godot.linuxbsd.editor.dev.x86_64
 
           # Deliberately don't include:
