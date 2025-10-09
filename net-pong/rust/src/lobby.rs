@@ -1,9 +1,9 @@
-use godot::classes::enet_connection::CompressionMode;  
-use godot::classes::object::ConnectFlags;  
-use godot::classes::{  
-    Button, ENetMultiplayerPeer, Label, LineEdit, LinkButton, Os, Panel, ProjectSettings, IPanel 
-};  
-use godot::global::Error;  
+use godot::classes::enet_connection::CompressionMode;
+use godot::classes::object::ConnectFlags;
+use godot::classes::{
+    Button, ENetMultiplayerPeer, IPanel, Label, LineEdit, LinkButton, Os, Panel, ProjectSettings,
+};
+use godot::global::Error;
 use godot::prelude::*;
 
 use crate::pong::Pong;
@@ -33,7 +33,6 @@ pub struct Lobby {
 
 #[godot_api]
 impl IPanel for Lobby {
-
     fn ready(&mut self) {
         /*
         # Connect all the callbacks related to networking.
@@ -51,16 +50,15 @@ impl IPanel for Lobby {
             .builder()
             .connect_other_gd(&gd_ref, |mut this: Gd<Self>, _id: i64| {
                 godot_print!("Someone connected, start the game!");
-                let pong: Gd<Pong> = load::<PackedScene>("res://pong.tscn")
-                    .instantiate_as::<Pong>();
+                let pong: Gd<Pong> =
+                    load::<PackedScene>("res://pong.tscn").instantiate_as::<Pong>();
                 // Connect deferred so we can safely erase it from the callback.
                 pong.signals()
                     .game_finished()
                     .builder()
                     .flags(ConnectFlags::DEFERRED)
                     .connect_other_gd(&this, |mut this: Gd<Self>| {
-                        this.bind_mut()
-                            .end_game("Client disconnected.".to_string());
+                        this.bind_mut().end_game("Client disconnected.".to_string());
                     });
 
                 this.bind_mut()
@@ -148,7 +146,7 @@ impl Lobby {
             self.base().get_node_as::<Node>("/root/Pong").free();
             self.base_mut().show();
         }
-    
+
         let mut multiplayer = self.base().get_multiplayer().unwrap();
         multiplayer.set_multiplayer_peer(Gd::null_arg()); // Remove peer.
         self.host_button.set_disabled(false);
@@ -176,13 +174,13 @@ impl Lobby {
         self.host_button.set_disabled(true);
         self.join_button.set_disabled(true);
         self.set_status("Waiting for player...", true);
-        let application_name = ProjectSettings::singleton()  
-            .get_setting("application/config/name")  
-            .to_string();  
-        self.base_mut()  
-            .get_window()  
-            .unwrap()  
-            .set_title(&format!("{application_name}: Server"));  
+        let application_name = ProjectSettings::singleton()
+            .get_setting("application/config/name")
+            .to_string();
+        self.base_mut()
+            .get_window()
+            .unwrap()
+            .set_title(&format!("{application_name}: Server"));
         // Only show hosting instructions when relevant.
         self.port_forward_label.set_visible(true);
         self.find_public_ip_button.set_visible(true);
@@ -205,13 +203,13 @@ impl Lobby {
         multiplayer.set_multiplayer_peer(&peer);
 
         self.set_status("Connecting...", true);
-        let application_name = ProjectSettings::singleton()  
-            .get_setting("application/config/name")  
-            .to_string();  
-        self.base_mut()  
-            .get_window()  
-            .unwrap()  
-            .set_title(&format!("{application_name}: Client")); 
+        let application_name = ProjectSettings::singleton()
+            .get_setting("application/config/name")
+            .to_string();
+        self.base_mut()
+            .get_window()
+            .unwrap()
+            .set_title(&format!("{application_name}: Client"));
     }
 
     fn _on_find_public_ip_pressed(&mut self) {

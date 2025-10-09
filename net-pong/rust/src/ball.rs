@@ -1,6 +1,6 @@
-use godot::prelude::*;
-use godot::classes::{Area2D, IArea2D};
 use crate::pong::Pong;
+use godot::classes::{Area2D, IArea2D};
+use godot::prelude::*;
 
 const DEFAULT_SPEED: f64 = 100.0;
 
@@ -16,7 +16,6 @@ pub struct Ball {
 #[godot_api]
 impl IArea2D for Ball {
     fn init(base: Base<Area2D>) -> Self {
-
         Self {
             direction: Vector2::LEFT,
             stopped: false,

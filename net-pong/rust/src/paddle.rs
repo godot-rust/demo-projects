@@ -21,7 +21,6 @@ use godot::classes::IArea2D;
 
 #[godot_api]
 impl IArea2D for Paddle {
-
     fn ready(&mut self) {
         // bounce signal is emitted when the ball enters the paddle area.
         self.signals()

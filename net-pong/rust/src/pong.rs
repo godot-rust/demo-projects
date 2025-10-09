@@ -1,6 +1,6 @@
-use godot::classes::{INode2D, Node2D, Label, Button, Area2D};
-use godot::prelude::*;
 use crate::ball::Ball;
+use godot::classes::{Area2D, Button, INode2D, Label, Node2D};
+use godot::prelude::*;
 
 const SCORE_TO_WIN: i32 = 10;
 
