@@ -1,5 +1,6 @@
-use godot::classes::Area2D;
 use godot::prelude::*;
+use godot::classes::{Area2D, IArea2D};
+use crate::pong::Pong;
 
 const DEFAULT_SPEED: f64 = 100.0;
 
@@ -12,14 +13,9 @@ pub struct Ball {
     base: Base<Area2D>,
 }
 
-use godot::classes::IArea2D;
-
-use crate::pong::Pong;
-
 #[godot_api]
 impl IArea2D for Ball {
     fn init(base: Base<Area2D>) -> Self {
-        godot_print!("Hello, world!"); // Prints to the Godot console
 
         Self {
             direction: Vector2::LEFT,
@@ -28,8 +24,6 @@ impl IArea2D for Ball {
             base,
         }
     }
-
-    fn ready(&mut self) {}
 
     fn process(&mut self, delta: f64) {
         let screen_size = self.base().get_viewport_rect().size;

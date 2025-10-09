@@ -4,11 +4,11 @@ compatibility_minimum = 4.4
 reloadable = true
 
 [libraries]
-linux.debug.x86_64 =     "res://../rust/target/debug/librust.so"
-linux.release.x86_64 =   "res://../rust/target/release/librust.so"
-windows.debug.x86_64 =   "res://../rust/target/debug/rust.dll"
-windows.release.x86_64 = "res://../rust/target/release/rust.dll"
-macos.debug =            "res://../rust/target/debug/librust.dylib"
-macos.release =          "res://../rust/target/release/librust.dylib"
-macos.debug.arm64 =      "res://../rust/target/debug/librust.dylib"
-macos.release.arm64 =    "res://../rust/target/release/librust.dylib"
+linux.debug.x86_64 =     "res://../../target/debug/libnet_pong.so"
+linux.release.x86_64 =   "res://../../target/release/libnet_pong.so"
+windows.debug.x86_64 =   "res://../../target/debug/net_pong.dll"
+windows.release.x86_64 = "res://../../target/release/net_pong.dll"
+macos.debug =            "res://../../target/debug/libnet_pong.dylib"
+macos.release =          "res://../../target/release/libnet_pong.dylib"
+macos.debug.arm64 =      "res://../../target/debug/libnet_pong.dylib"
+macos.release.arm64 =    "res://../../target/release/libnet_pong.dylib"

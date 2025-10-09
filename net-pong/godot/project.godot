@@ -10,9 +10,9 @@ config_version=5
 
 [application]
 
-config/name="Rust Template"
+config/name="Multiplayer Pong"
 run/main_scene="uid://f85s2avde6r4"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="uid://dcvpakna8i04d"
 
 [display]

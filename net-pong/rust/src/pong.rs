@@ -1,13 +1,11 @@
-use godot::classes::Area2D;
-use godot::classes::Button;
-use godot::classes::Label;
-use godot::classes::Node2D;
+use godot::classes::{INode2D, Node2D, Label, Button, Area2D};
 use godot::prelude::*;
+use crate::ball::Ball;
 
 const SCORE_TO_WIN: i32 = 10;
 
 #[derive(GodotClass)]
-#[class(base=Node2D)]
+#[class(init, base=Node2D)]
 pub struct Pong {
     score_left: i32,
     score_right: i32,
@@ -30,28 +28,8 @@ pub struct Pong {
     base: Base<Node2D>,
 }
 
-use godot::classes::INode2D;
-
-use crate::ball::Ball;
-
 #[godot_api]
 impl INode2D for Pong {
-    fn init(base: Base<Node2D>) -> Self {
-        Self {
-            score_left: 0,
-            score_right: 0,
-            player1: None,
-            player2: None,
-            score_left_node: None,
-            score_right_node: None,
-            winner_left: None,
-            winner_right: None,
-            exit_game: None,
-            ball: None,
-            base,
-        }
-    }
-
     fn ready(&mut self) {
         if self.base().get_multiplayer().unwrap().is_server() {
             // For the server, give control of player 2 to the other peer.
