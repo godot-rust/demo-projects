@@ -12,7 +12,7 @@ struct Paddle {
     motion: f32,
     you_hidden: bool,
     #[export]
-    you_label: Option<Gd<Label>>,
+    you_label: OnEditor<Gd<Label>>,
 
     base: Base<Area2D>,
 }
@@ -41,7 +41,7 @@ impl IArea2D for Paddle {
             self.motion = input.get_axis("move_up", "move_down");
 
             if !self.you_hidden && self.motion != 0.0 {
-                self.you_label.as_mut().unwrap().hide();
+                self.you_label.hide();
             }
 
             self.motion *= MOTION_SPEED;
@@ -51,7 +51,7 @@ impl IArea2D for Paddle {
             let args = vslice![self.base().get_position(), self.motion];
             self.base_mut().rpc("set_pos_and_motion", args);
         } else if !self.you_hidden {
-            self.you_label.as_mut().unwrap().hide();
+            self.you_label.hide();
         }
 
         let translation = Vector2::new(0.0, self.motion * delta as f32);
