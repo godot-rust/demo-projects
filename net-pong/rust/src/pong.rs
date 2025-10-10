@@ -10,9 +10,9 @@ pub struct Pong {
     score_left: i32,
     score_right: i32,
     #[export]
-    player1: OnEditor<Gd<Area2D>>,
+    host_player: OnEditor<Gd<Area2D>>,
     #[export]
-    player2: OnEditor<Gd<Area2D>>,
+    client_player: OnEditor<Gd<Area2D>>,
     #[export]
     score_left_node: OnEditor<Gd<Label>>,
     #[export]
@@ -34,11 +34,11 @@ impl INode2D for Pong {
         if self.base().get_multiplayer().unwrap().is_server() {
             // For the server, give control of player 2 to the other peer.
             let authority = self.base().get_multiplayer().unwrap().get_peers()[0];
-            self.player2.set_multiplayer_authority(authority);
+            self.client_player.set_multiplayer_authority(authority);
         } else {
             // For the client, give control of player 2 to itself.
             let authority = self.base().get_multiplayer().unwrap().get_unique_id();
-            self.player2.set_multiplayer_authority(authority);
+            self.client_player.set_multiplayer_authority(authority);
         }
 
         let gd_ref = self.to_gd();
