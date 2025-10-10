@@ -28,6 +28,10 @@ impl IArea2D for Paddle {
             .connect_self(|this: &mut Self, mut area: Gd<Area2D>| {
                 if this.base().is_multiplayer_authority() {
                     // Set a random direction for the ball to go in
+                    // Note: all RPCs consume their arguments as Variant
+                    // this is a limitation of godot-rust
+                    // we currently don't have a way to statically type RPCs the way we do for signals
+                    // so we have to use Variant and convert manually
                     let args = vslice![this.left, randf()];
                     area.rpc("bounce", args);
                 }
