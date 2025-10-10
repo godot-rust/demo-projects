@@ -172,6 +172,7 @@ jobs:
             os: windows-latest
             artifact-name: windows-nightly
             godot-binary: godot.windows.editor.dev.x86_64.exe
+            retry: true
 
           # Linux
 
@@ -179,11 +180,13 @@ jobs:
             os: ubuntu-22.04
             artifact-name: linux-nightly
             godot-binary: godot.linuxbsd.editor.dev.x86_64
+            retry: true
 
           - name: linux-4.5
             os: ubuntu-22.04
             artifact-name: linux-4.5
             godot-binary: godot.linuxbsd.editor.dev.x86_64
+            retry: true
 
           # Deliberately don't include:
           #
@@ -228,7 +231,7 @@ jobs:
           # Match all directories/files except `target` and any starting with `.`.
           files='!(target|.*)/'
           if [[ $RETRY == "true" ]]; then
-            # macOS – retry running demo projects several times on fail.
+            # Retry running demo projects several times on fail.
             echo "Running examples with retry"
             RETRY_CMD="./.github/other/retry.sh"
           else
