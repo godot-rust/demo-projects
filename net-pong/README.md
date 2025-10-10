@@ -1,5 +1,6 @@
 # Godot Rust Multiplayer Pong
 based on https://godotengine.org/asset-library/asset/2798
+source code: https://github.com/godotengine/godot-demo-projects/tree/4.3/networking/multiplayer_pong
 
 ## License
 
