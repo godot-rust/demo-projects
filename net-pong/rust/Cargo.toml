@@ -1,0 +1,13 @@
+[package]
+name = "net-pong"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.90"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+godot = {git = "https://github.com/godot-rust/gdext.git"}
+
+[lib]
+crate-type = ["cdylib"] # Compile this crate to a dynamic C library.
