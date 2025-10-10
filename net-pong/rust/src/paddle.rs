@@ -31,7 +31,7 @@ impl IArea2D for Paddle {
                     // Note: all RPCs consume their arguments as Variant
                     // this is a limitation of godot-rust
                     // we currently don't have a way to statically type RPCs the way we do for signals
-                    // so we have to use Variant and convert manually
+                    // so we have to use a variant array slice and convert manually
                     let args = vslice![this.left, randf()];
                     area.rpc("bounce", args);
                 }
