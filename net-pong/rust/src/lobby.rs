@@ -50,15 +50,14 @@ impl IPanel for Lobby {
             .builder()
             .connect_other_gd(&gd_ref, |mut this: Gd<Self>, _id: i64| {
                 godot_print!("Someone connected, start the game!");
-                let pong: Gd<Pong> =
-                    load::<PackedScene>("res://pong.tscn").instantiate_as::<Pong>();
+                let pong = load::<PackedScene>("res://pong.tscn").instantiate_as::<Pong>();
                 // Connect deferred so we can safely erase it from the callback.
                 pong.signals()
                     .game_finished()
                     .builder()
                     .flags(ConnectFlags::DEFERRED)
-                    .connect_other_gd(&this, |mut this: Gd<Self>| {
-                        this.bind_mut().end_game("Client disconnected.".to_string());
+                    .connect_other_mut(&this, |this| {
+                        this.end_game("Client disconnected.");
                     });
 
                 this.bind_mut()
@@ -74,25 +73,18 @@ impl IPanel for Lobby {
             .signals()
             .peer_disconnected()
             .builder()
-            .connect_other_mut(&self.to_gd(), |this: &mut Self, _id: i64| {
+            .connect_other_mut(&gd_ref, |this, _id: i64| {
                 if this.base().get_multiplayer().unwrap().is_server() {
-                    this.end_game("Client disconnected.".to_string());
+                    this.end_game("Client disconnected.");
                 } else {
-                    this.end_game("Server disconnected.".to_string());
+                    this.end_game("Server disconnected.");
                 }
-            });
-        multiplayer
-            .signals()
-            .connected_to_server()
-            .builder()
-            .connect_other_mut(&self.to_gd(), |_this: &mut Self| {
-                // This function is not needed for this project.
             });
         multiplayer
             .signals()
             .connection_failed()
             .builder()
-            .connect_other_mut(&self.to_gd(), |this: &mut Self| {
+            .connect_other_mut(&gd_ref, |this| {
                 this.set_status("Couldn't connect.", false);
                 let mut multiplayer = this.base().get_multiplayer().unwrap();
                 multiplayer.set_multiplayer_peer(Gd::null_arg()); // Remove peer.
@@ -103,15 +95,15 @@ impl IPanel for Lobby {
             .signals()
             .server_disconnected()
             .builder()
-            .connect_other_mut(&self.to_gd(), |this: &mut Self| {
-                this.end_game("Server disconnected.".to_string());
+            .connect_other_mut(&gd_ref, |this| {
+                this.end_game("Server disconnected.");
             });
 
         self.host_button
             .signals()
             .pressed()
             .builder()
-            .connect_other_mut(&gd_ref, |this: &mut Self| {
+            .connect_other_mut(&gd_ref, |this| {
                 this.on_host_pressed();
             });
 
@@ -119,7 +111,7 @@ impl IPanel for Lobby {
             .signals()
             .pressed()
             .builder()
-            .connect_other_mut(&gd_ref, |this: &mut Self| {
+            .connect_other_mut(&gd_ref, |this| {
                 this.on_join_pressed();
             });
     }
@@ -138,8 +130,7 @@ impl Lobby {
         }
     }
 
-    #[func]
-    fn end_game(&mut self, with_error: String) {
+    fn end_game(&mut self, with_error: &str) {
         if self.base().has_node("/root/Pong") {
             // Erase immediately, otherwise network might show
             // errors (this is why we connected deferred above).
@@ -152,7 +143,7 @@ impl Lobby {
         self.host_button.set_disabled(false);
         self.join_button.set_disabled(false);
 
-        self.set_status(&with_error, false);
+        self.set_status(with_error, false);
     }
 
     fn on_host_pressed(&mut self) {

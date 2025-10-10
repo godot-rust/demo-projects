@@ -5,35 +5,28 @@ use godot::prelude::*;
 const DEFAULT_SPEED: f64 = 100.0;
 
 #[derive(GodotClass)]
-#[class(base=Area2D)]
+#[class(init, base=Area2D)]
 pub struct Ball {
+    #[init(val = Vector2::LEFT)]
     direction: Vector2,
     stopped: bool,
-    _speed: f64,
+    #[init(val = DEFAULT_SPEED)]
+    speed: f64,
     base: Base<Area2D>,
 }
 
 #[godot_api]
 impl IArea2D for Ball {
-    fn init(base: Base<Area2D>) -> Self {
-        Self {
-            direction: Vector2::LEFT,
-            stopped: false,
-            _speed: DEFAULT_SPEED,
-            base,
-        }
-    }
-
     fn process(&mut self, delta: f64) {
         let screen_size = self.base().get_viewport_rect().size;
-        self._speed += delta;
+        self.speed += delta;
 
         if !self.stopped {
             // Ball will move normally for both players,
             // even if it's sightly out of sync between them,
             // so each player sees the motion as smooth and not jerky.
             let direction = self.direction;
-            let translation = direction * (self._speed * delta) as f32;
+            let translation = direction * (self.speed * delta) as f32;
             self.base_mut().translate(translation);
         }
 
@@ -46,8 +39,11 @@ impl IArea2D for Ball {
         }
 
         let mut parent = self.base().get_parent().unwrap().cast::<Pong>();
-        if self.base().is_multiplayer_authority() {
-            // Only the master will decide when the ball is out in
+        // Allows re-entrancy – required if a game stops and we need to reset our ball.
+        // this help fixes the double bind error
+        let mut guard = self.base_mut();
+        if guard.is_multiplayer_authority() {
+            // Only the master will decide when the ball is out on
             // the left side (its own side). This makes the game
             // playable even if latency is high and ball is going
             // fast. Otherwise, the ball might be out in the other
@@ -55,10 +51,10 @@ impl IArea2D for Ball {
             if ball_pos.x < 0.0 {
                 let args = vslice![false];
                 parent.rpc("update_score", args);
-                self.base_mut().rpc("reset_ball", args);
+                guard.rpc("reset_ball", args);
             }
         } else {
-            // Only the puppet will decide when the ball is out in
+            // Only the puppet will decide when the ball is out on
             // the right side, which is its own side. This makes
             // the game playable even if latency is high and ball
             // is going fast. Otherwise, the ball might be out in the
@@ -66,7 +62,7 @@ impl IArea2D for Ball {
             if ball_pos.x > screen_size.x {
                 let args = vslice![true];
                 parent.rpc("update_score", args);
-                self.base_mut().rpc("reset_ball", args);
+                guard.rpc("reset_ball", args);
             }
         }
     }
@@ -82,7 +78,7 @@ impl Ball {
         } else {
             self.direction.x = -self.direction.x.abs();
         }
-        self._speed *= 1.1;
+        self.speed *= 1.1;
         self.direction.y = random * 2.0 - 1.0;
         self.direction = self.direction.normalized();
     }
@@ -101,6 +97,6 @@ impl Ball {
         } else {
             self.direction = Vector2::RIGHT;
         }
-        self._speed = DEFAULT_SPEED;
+        self.speed = DEFAULT_SPEED;
     }
 }

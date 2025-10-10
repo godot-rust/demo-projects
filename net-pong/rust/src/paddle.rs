@@ -27,7 +27,7 @@ impl IArea2D for Paddle {
             .area_entered()
             .connect_self(|this: &mut Self, mut area: Gd<Area2D>| {
                 if this.base().is_multiplayer_authority() {
-                    // Random for new direction generated checked each peer.
+                    // Set a random direction for the ball to go in
                     let args = vslice![this.left, randf()];
                     area.rpc("bounce", args);
                 }

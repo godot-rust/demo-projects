@@ -10,21 +10,21 @@ pub struct Pong {
     score_left: i32,
     score_right: i32,
     #[export]
-    player1: Option<Gd<Area2D>>,
+    player1: OnEditor<Gd<Area2D>>,
     #[export]
-    player2: Option<Gd<Area2D>>,
+    player2: OnEditor<Gd<Area2D>>,
     #[export]
-    score_left_node: Option<Gd<Label>>,
+    score_left_node: OnEditor<Gd<Label>>,
     #[export]
-    score_right_node: Option<Gd<Label>>,
+    score_right_node: OnEditor<Gd<Label>>,
     #[export]
-    winner_left: Option<Gd<Label>>,
+    winner_left: OnEditor<Gd<Label>>,
     #[export]
-    winner_right: Option<Gd<Label>>,
+    winner_right: OnEditor<Gd<Label>>,
     #[export]
-    exit_game: Option<Gd<Button>>,
+    exit_game: OnEditor<Gd<Button>>,
     #[export]
-    ball: Option<Gd<Ball>>,
+    ball: OnEditor<Gd<Ball>>,
     base: Base<Node2D>,
 }
 
@@ -34,23 +34,15 @@ impl INode2D for Pong {
         if self.base().get_multiplayer().unwrap().is_server() {
             // For the server, give control of player 2 to the other peer.
             let authority = self.base().get_multiplayer().unwrap().get_peers()[0];
-            self.player2
-                .as_mut()
-                .unwrap()
-                .set_multiplayer_authority(authority);
+            self.player2.set_multiplayer_authority(authority);
         } else {
             // For the client, give control of player 2 to itself.
             let authority = self.base().get_multiplayer().unwrap().get_unique_id();
-            self.player2
-                .as_mut()
-                .unwrap()
-                .set_multiplayer_authority(authority);
+            self.player2.set_multiplayer_authority(authority);
         }
 
         let gd_ref = self.to_gd();
         self.exit_game
-            .as_mut()
-            .unwrap()
             .signals()
             .pressed()
             .builder()
@@ -70,29 +62,25 @@ impl Pong {
         if add_to_left {
             self.score_left += 1;
             self.score_left_node
-                .as_mut()
-                .unwrap()
                 .set_text(self.score_left.to_string().as_str());
         } else {
             self.score_right += 1;
             self.score_right_node
-                .as_mut()
-                .unwrap()
                 .set_text(self.score_right.to_string().as_str());
         }
 
         let mut game_ended = false;
         if self.score_left == SCORE_TO_WIN {
-            self.winner_left.as_mut().unwrap().show();
+            self.winner_left.show();
             game_ended = true;
         } else if self.score_right == SCORE_TO_WIN {
-            self.winner_right.as_mut().unwrap().show();
+            self.winner_right.show();
             game_ended = true;
         }
 
         if game_ended {
-            self.exit_game.as_mut().unwrap().show();
-            self.ball.as_mut().unwrap().rpc("stop", &[]);
+            self.exit_game.show();
+            self.ball.rpc("stop", &[]);
         }
     }
 
