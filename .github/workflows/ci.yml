@@ -114,7 +114,7 @@ jobs:
 
           - name: linux
             os: ubuntu-22.04
-            rust-toolchain: "1.87"
+            rust-toolchain: "1.90"
             rust-special: -msrv
 
     steps:
