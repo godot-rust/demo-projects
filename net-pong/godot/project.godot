@@ -13,7 +13,7 @@ config_version=5
 config/name="Multiplayer Pong"
 run/main_scene="uid://f85s2avde6r4"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="uid://dcvpakna8i04d"
+config/icon="uid://71q6yteydysw"
 
 [display]
 
