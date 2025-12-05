@@ -55,7 +55,7 @@ impl ICharacterBody3D for Player {
             let mut pivot = self.base_mut().get_node_as::<Node3D>("Pivot");
 
             // Setting the basis property will affect the rotation of the node.
-            pivot.set_basis(Basis::looking_at(-direction, Vector3::UP, true));
+            pivot.set_basis(Basis::looking_at(-direction));
             self.base()
                 .get_node_as::<AnimationPlayer>("AnimationPlayer")
                 .set_speed_scale(4.0);
