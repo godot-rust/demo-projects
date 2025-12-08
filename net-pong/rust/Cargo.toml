@@ -7,7 +7,7 @@ license = "MPL-2.0"
 publish = false
 
 [dependencies]
-godot = {git = "https://github.com/godot-rust/gdext.git"}
+godot = {git = "https://github.com/godot-rust/gdext.git", features = ["register-docs"]}
 
 [lib]
 crate-type = ["cdylib"] # Compile this crate to a dynamic C library.

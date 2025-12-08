@@ -154,12 +154,6 @@ jobs:
           # macOS builds fail semi-randomly with an `libc++abi: Pure virtual function called!` error.
           # For now on run them with retry; resort to compiling only if it won't be enough (i.e. first time when it will fail three times in the row).
           # See: https://github.com/godot-rust/demo-projects/issues/12
-          - name: macos-x86
-            os: macos-13
-            artifact-name: macos-x86-nightly
-            godot-binary: godot.macos.editor.dev.x86_64
-            retry: true
-
           - name: macos-arm
             os: macos-latest
             artifact-name: macos-arm-nightly

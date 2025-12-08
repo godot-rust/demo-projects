@@ -2,7 +2,7 @@ use crate::pong::Pong;
 use godot::classes::{Area2D, IArea2D};
 use godot::prelude::*;
 
-const DEFAULT_SPEED: f64 = 100.0;
+const DEFAULT_SPEED: f32 = 100.0;
 
 #[derive(GodotClass)]
 #[class(init, base=Area2D)]
@@ -11,13 +11,13 @@ pub struct Ball {
     direction: Vector2,
     stopped: bool,
     #[init(val = DEFAULT_SPEED)]
-    speed: f64,
+    speed: f32,
     base: Base<Area2D>,
 }
 
 #[godot_api]
 impl IArea2D for Ball {
-    fn process(&mut self, delta: f64) {
+    fn process(&mut self, delta: f32) {
         let screen_size = self.base().get_viewport_rect().size;
         self.speed += delta;
 
@@ -26,7 +26,7 @@ impl IArea2D for Ball {
             // even if it's sightly out of sync between them,
             // so each player sees the motion as smooth and not jerky.
             let direction = self.direction;
-            let translation = direction * (self.speed * delta) as f32;
+            let translation = direction * self.speed * delta;
             self.base_mut().translate(translation);
         }
 
@@ -39,8 +39,7 @@ impl IArea2D for Ball {
         }
 
         let mut parent = self.base().get_parent().unwrap().cast::<Pong>();
-        // Allows re-entrancy – required if a game stops and we need to reset our ball.
-        // this help fixes the double bind error
+        // Use base_mut() to allow for reentrancy – required if a game stops, and we need to reset our ball.
         let mut guard = self.base_mut();
         if guard.is_multiplayer_authority() {
             // Only the master will decide when the ball is out on
