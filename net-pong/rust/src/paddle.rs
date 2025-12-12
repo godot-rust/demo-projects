@@ -38,7 +38,7 @@ impl IArea2D for Paddle {
             });
     }
 
-    fn process(&mut self, delta: f64) {
+    fn process(&mut self, delta: f32) {
         if self.base().is_multiplayer_authority() {
             let input = Input::singleton();
             self.motion = input.get_axis("move_up", "move_down");
@@ -57,7 +57,7 @@ impl IArea2D for Paddle {
             self.you_label.hide();
         }
 
-        let translation = Vector2::new(0.0, self.motion * delta as f32);
+        let translation = Vector2::new(0.0, self.motion * delta);
 
         self.base_mut().translate(translation);
 
