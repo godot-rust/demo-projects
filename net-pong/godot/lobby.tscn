@@ -153,6 +153,7 @@ offset_bottom = 141.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Find your public IP address"
+uri = "icanhazip.com"
 
 [connection signal="pressed" from="LobbyPanel/HostButton" to="LobbyPanel" method="_on_host_pressed"]
 [connection signal="pressed" from="LobbyPanel/JoinButton" to="LobbyPanel" method="_on_join_pressed"]
