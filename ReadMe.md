@@ -4,9 +4,9 @@
 
 _**[Website]** | **[Main repo]** |  [Book] | [API Docs] | [Sponsor]_
 
-This repository collects official demos and examples for the **[gdext][Main repo]** library. There are few demos at the moment, and we don't
+This repository collects official demos and examples for the **[godot-rust][Main repo]** library. There are few demos at the moment, and we don't
 intend to showcase every aspect of the library here. Instead, demos are designed to be more "real-world" oriented, without getting so big
-that readers are overhwelmed.
+that readers are overwhelmed.
 
 Demo projects do not replace the book and API docs, but are meant to be read in addition. If you're encountering concepts in the
 code that seem strange, please check both book and docs first!
@@ -16,11 +16,20 @@ code that seem strange, please check both book and docs first!
 
 We currently feature the following demo projects:
 
-- [**Dodge the Creeps**](dodge-the-creeps)  
-  A simple game where you dodge enemies. Ported from the official Godot tutorial.
-
 - [**Hot reload**](hot-reload)  
   Showcases how classes and their state can be hot-reloaded in the Godot editor.
+
+- [**Dodge the Creeps**](dodge-the-creeps)  
+  A simple 2D game where you dodge enemies. Good to get an overview of basic godot-rust concepts.  
+  - Godot upstream demo: [2d/dodge_the_creeps](https://github.com/godotengine/godot-demo-projects/tree/master/2d/dodge_the_creeps)
+
+- [**Squash the Creeps**](squash-the-creeps)
+  A simple 3D game ported from official Godot demo.   
+  - Godot upstream demo: [3d/squash_the_creeps](https://github.com/godotengine/godot-demo-projects/tree/master/3d/squash_the_creeps)
+
+- [**Net Pong**](net-pong)  
+  A networked Pong game, using Godot's high-level multiplayer API with godot-rust.
+  - Godot upstream demo: [networking/multiplayer_pong](https://github.com/godotengine/godot-demo-projects/tree/master/networking/multiplayer_pong)
 
 
 ## Engine and library versions
