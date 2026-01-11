@@ -15,8 +15,9 @@ Cargo.lock
 # Needed to run projects without having to open the editor first.
 !**/.godot/extension_list.cfg
 
-# This project: input JSONs and code generation
+# This project: input JSONs, codegen, exporting Godot builds
 gen
+export
 
 # Temporary tweaks, remove later
 /script

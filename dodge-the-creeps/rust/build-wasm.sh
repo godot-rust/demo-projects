@@ -4,11 +4,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Must be in dodge-the-creep's rust directory in order to pick up the .cargo/config
+# Must be in dodge-the-creeps' rust directory, pick up the .cargo/config file.
 cd `dirname "$0"`
 
-# We build the host gdextension first so that the godot editor doesn't complain.
+# We build the host GDExtension first, so that the Godot editor doesn't complain.
 cargo +nightly build --package dodge-the-creeps &&
 cargo +nightly build --package dodge-the-creeps \
-  --features godot/experimental-wasm,godot/lazy-function-tables \
+  --features godot/experimental-wasm,godot/experimental-wasm-nothreads,godot/lazy-function-tables \
   --target wasm32-unknown-emscripten -Zbuild-std $@

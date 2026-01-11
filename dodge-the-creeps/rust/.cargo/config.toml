@@ -4,9 +4,13 @@
 # targets: https://github.com/rust-lang/cargo/issues/8733
 [target.wasm32-unknown-emscripten]
 rustflags = [
-    "-C", "link-args=-pthread", # assumes threads enabled.
+    # If threads are enabled, uncomment the following two:
+    #"-C", "link-args=-pthread",
+    #"-C", "target-feature=+atomics",
+
     "-C", "link-args=-sSIDE_MODULE=2",
-    "-C", "target-feature=+atomics,+bulk-memory,+mutable-globals",
-    "-Zlink-native-libraries=no",
-    "-Cllvm-args=-enable-emscripten-cxx-exceptions=0",
+    "-C", "llvm-args=-enable-emscripten-cxx-exceptions=0",
+    "-Z", "default-visibility=hidden",
+    "-Z", "link-native-libraries=no",
+    "-Z", "emscripten-wasm-eh=false",
 ]

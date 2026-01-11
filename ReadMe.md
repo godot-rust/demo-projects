@@ -20,11 +20,11 @@ We currently feature the following demo projects:
   Showcases how classes and their state can be hot-reloaded in the Godot editor.
 
 - [**Dodge the Creeps**](dodge-the-creeps)  
-  A simple 2D game where you dodge enemies. Good to get an overview of basic godot-rust concepts.  
+  A simple 2D game where you dodge enemies. Good to get an overview of basic godot-rust concepts.
   - Godot upstream demo: [2d/dodge_the_creeps](https://github.com/godotengine/godot-demo-projects/tree/master/2d/dodge_the_creeps)
 
-- [**Squash the Creeps**](squash-the-creeps)
-  A simple 3D game ported from official Godot demo.   
+- [**Squash the Creeps**](squash-the-creeps)  
+  A simple 3D game ported from official Godot demo.
   - Godot upstream demo: [3d/squash_the_creeps](https://github.com/godotengine/godot-demo-projects/tree/master/3d/squash_the_creeps)
 
 - [**Net Pong**](net-pong)  
