@@ -176,9 +176,9 @@ jobs:
             godot-binary: godot.linuxbsd.editor.dev.x86_64
             retry: true
 
-          - name: linux-4.5
+          - name: linux-4.6
             os: ubuntu-22.04
-            artifact-name: linux-4.5
+            artifact-name: linux-4.6
             godot-binary: godot.linuxbsd.editor.dev.x86_64
             retry: true
 
