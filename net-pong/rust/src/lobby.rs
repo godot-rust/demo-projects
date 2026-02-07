@@ -63,7 +63,6 @@ impl IPanel for Lobby {
                 this.bind_mut()
                     .base_mut()
                     .get_tree()
-                    .unwrap()
                     .get_root()
                     .unwrap()
                     .add_child(&pong);

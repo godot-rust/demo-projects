@@ -43,7 +43,7 @@ impl INode for MainScene {
                 .get_node_as::<ColorRect>("UserInterface/Retry")
                 .is_visible()
         {
-            self.base().get_tree().unwrap().reload_current_scene();
+            self.base().get_tree().reload_current_scene();
         }
     }
 }
