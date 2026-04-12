@@ -2,7 +2,8 @@
 resolver = "2"
 members = [
     "dodge-the-creeps/rust",
-    "hot-reload/rust",
+    "hot-reload/rust", 
+    "multiplayer-bomber/rust",
     "net-pong/rust",
     "squash-the-creeps/rust"
 ]

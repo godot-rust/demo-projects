@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://dylaslkwt4llp"]
+
+[node name="Gamestate" type="GameState" unique_id=1439002561]
