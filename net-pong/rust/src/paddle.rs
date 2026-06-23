@@ -17,7 +17,19 @@ struct Paddle {
     base: Base<Area2D>,
 }
 
+#[godot_api]
+impl Paddle {
+    #[rpc(unreliable)]
+    fn set_pos_and_motion(&mut self, pos: Vector2, motion: f32) {
+        self.base_mut().set_position(pos);
+        self.motion = motion;
+    }
+}
+
 use godot::classes::IArea2D;
+use godot::obj::WithUserRpcs;
+
+use crate::ball::Ball;
 
 #[godot_api]
 impl IArea2D for Paddle {
@@ -25,15 +37,12 @@ impl IArea2D for Paddle {
         // bounce signal is emitted when the ball enters the paddle area.
         self.signals()
             .area_entered()
-            .connect_self(|this: &mut Self, mut area: Gd<Area2D>| {
-                if this.base().is_multiplayer_authority() {
+            .connect_self(|this: &mut Self, area: Gd<Area2D>| {
+                if let Ok(ball) = area.try_cast::<Ball>()
+                    && this.base().is_multiplayer_authority()
+                {
                     // Set a random direction for the ball to go in
-                    // Note: all RPCs consume their arguments as Variant
-                    // this is a limitation of godot-rust
-                    // we currently don't have a way to statically type RPCs the way we do for signals
-                    // so we have to use a variant array slice and convert manually
-                    let args = vslice![this.left, randf()];
-                    area.rpc("bounce", args);
+                    let _ = ball.rpcs().bounce(this.left, randf() as f32).call();
                 }
             });
     }
@@ -51,8 +60,9 @@ impl IArea2D for Paddle {
 
             // Using unreliable to make sure position is updated as fast
             // as possible, even if one of the calls is dropped.
-            let args = vslice![self.base().get_position(), self.motion];
-            self.base_mut().rpc("set_pos_and_motion", args);
+            let position = self.base().get_position();
+            let motion = self.motion;
+            let _ = self.rpcs().set_pos_and_motion(position, motion).call();
         } else if !self.you_hidden {
             self.you_label.hide();
         }
@@ -68,14 +78,5 @@ impl IArea2D for Paddle {
             position.x,
             position.y.clamp(16.0, screen_size_y - 16.0),
         ));
-    }
-}
-
-#[godot_api]
-impl Paddle {
-    #[rpc(unreliable)]
-    fn set_pos_and_motion(&mut self, pos: Vector2, motion: f32) {
-        self.base_mut().set_position(pos);
-        self.motion = motion;
     }
 }

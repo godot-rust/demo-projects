@@ -38,19 +38,25 @@ impl IArea2D for Ball {
             self.direction.y = -self.direction.y;
         }
 
-        let mut parent = self.base().get_parent().unwrap().cast::<Pong>();
-        // Use base_mut() to allow for reentrancy – required if a game stops, and we need to reset our ball.
-        let mut guard = self.base_mut();
-        if guard.is_multiplayer_authority() {
+        let parent = self.base().get_parent().unwrap().cast::<Pong>();
+        if self.base().is_multiplayer_authority() {
             // Only the master will decide when the ball is out on
             // the left side (its own side). This makes the game
             // playable even if latency is high and ball is going
             // fast. Otherwise, the ball might be out in the other
             // player's screen but not this one.
             if ball_pos.x < 0.0 {
-                let args = vslice![false];
-                parent.rpc("update_score", args);
-                guard.rpc("reset_ball", args);
+                // When calling the parent rpc, we have to create a base_mut() guard for the ball
+                // This is because the update_score() RPC calls an RPC back to Ball inside of it
+                // And, if we don't have a guard set up, that could cause a panic since we are doing a mutable reborrow
+                {
+                    let _guard = self.base_mut();
+                    let _ = parent.rpcs().update_score(false).call();
+                }
+                godot_print!("Reset ball right");
+                if let Err(e) = self.rpcs().reset_ball(false).call() {
+                    godot_print!("Rpc error {e}");
+                }
             }
         } else {
             // Only the puppet will decide when the ball is out on
@@ -59,9 +65,14 @@ impl IArea2D for Ball {
             // is going fast. Otherwise, the ball might be out in the
             // other player's screen but not this one.
             if ball_pos.x > screen_size.x {
-                let args = vslice![true];
-                parent.rpc("update_score", args);
-                guard.rpc("reset_ball", args);
+                {
+                    let _guard = self.base_mut();
+                    let _ = parent.rpcs().update_score(true).call();
+                }
+                godot_print!("Reset ball left");
+                if let Err(e) = self.rpcs().reset_ball(true).call() {
+                    godot_print!("Rpc error {e}");
+                }
             }
         }
     }
@@ -85,17 +96,21 @@ impl Ball {
     #[rpc(any_peer, call_local)]
     fn stop(&mut self) {
         self.stopped = true;
+        godot_print!("Ball stopped");
     }
 
     #[rpc(any_peer, call_local)]
     fn reset_ball(&mut self, for_left: bool) {
         let screen_center = self.base().get_viewport_rect().size / 2.0;
+        godot_print!("Modifying position");
         self.base_mut().set_position(screen_center);
+        godot_print!("Position modified");
         if for_left {
             self.direction = Vector2::LEFT;
         } else {
             self.direction = Vector2::RIGHT;
         }
         self.speed = DEFAULT_SPEED;
+        godot_print!("Reset Ball RPC finished");
     }
 }

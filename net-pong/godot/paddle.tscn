@@ -1,21 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://cpw46256eirwq"]
+[gd_scene format=3 uid="uid://cpw46256eirwq"]
 
-[ext_resource type="Texture2D" uid="uid://bjw2yb853klh2" path="res://paddle.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://faaa5fcbbpmh" path="res://paddle.png" id="2"]
 
 [sub_resource type="CapsuleShape2D" id="1"]
 radius = 4.78568
 height = 23.6064
 
-[node name="Paddle" type="Paddle" node_paths=PackedStringArray("you_label")]
+[node name="Paddle" type="Paddle" unique_id=1998518565 node_paths=PackedStringArray("you_label")]
 you_label = NodePath("You")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=974349175]
 texture = ExtResource("2")
 
-[node name="Shape3D" type="CollisionShape2D" parent="."]
+[node name="Shape3D" type="CollisionShape2D" parent="." unique_id=818542247]
 shape = SubResource("1")
 
-[node name="You" type="Label" parent="."]
+[node name="You" type="Label" parent="." unique_id=717389319]
 offset_left = -26.0
 offset_top = -33.0
 offset_right = 27.0

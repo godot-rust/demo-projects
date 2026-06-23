@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://f85s2avde6r4"]
 
-[node name="Lobby" type="Control"]
+[node name="Lobby" type="Control" unique_id=240206270]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -16,7 +16,7 @@ grow_vertical = 2
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=2039769192]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -36,7 +36,7 @@ text = "Multiplayer Pong"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LobbyPanel" type="Lobby" parent="." node_paths=PackedStringArray("address", "host_button", "join_button", "status_ok", "status_fail", "port_forward_label", "find_public_ip_button")]
+[node name="LobbyPanel" type="Lobby" parent="." unique_id=1250530587 node_paths=PackedStringArray("address", "host_button", "join_button", "status_ok", "status_fail", "port_forward_label", "find_public_ip_button")]
 address = NodePath("Address")
 host_button = NodePath("HostButton")
 join_button = NodePath("JoinButton")
@@ -59,7 +59,7 @@ grow_vertical = 2
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
-[node name="AddressLabel" type="Label" parent="LobbyPanel"]
+[node name="AddressLabel" type="Label" parent="LobbyPanel" unique_id=1083040553]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 6.0
@@ -69,7 +69,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "Address:"
 
-[node name="Address" type="LineEdit" parent="LobbyPanel"]
+[node name="Address" type="LineEdit" parent="LobbyPanel" unique_id=188993081]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 37.0
@@ -79,7 +79,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "127.0.0.1"
 
-[node name="HostButton" type="Button" parent="LobbyPanel"]
+[node name="HostButton" type="Button" parent="LobbyPanel" unique_id=1074064387]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 76.0
@@ -89,7 +89,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Host"
 
-[node name="JoinButton" type="Button" parent="LobbyPanel"]
+[node name="JoinButton" type="Button" parent="LobbyPanel" unique_id=1019011179]
 layout_mode = 0
 offset_left = 130.0
 offset_top = 76.0
@@ -99,7 +99,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Join"
 
-[node name="StatusOk" type="Label" parent="LobbyPanel"]
+[node name="StatusOk" type="Label" parent="LobbyPanel" unique_id=1633483328]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 114.0
@@ -109,7 +109,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 0
 horizontal_alignment = 1
 
-[node name="StatusFail" type="Label" parent="LobbyPanel"]
+[node name="StatusFail" type="Label" parent="LobbyPanel" unique_id=933125461]
 modulate = Color(1, 0.427451, 0.345098, 1)
 layout_mode = 0
 offset_left = 10.0
@@ -120,7 +120,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 0
 horizontal_alignment = 1
 
-[node name="PortForward" type="Label" parent="LobbyPanel"]
+[node name="PortForward" type="Label" parent="LobbyPanel" unique_id=623464281]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -138,7 +138,7 @@ text = "If you want non-LAN clients to connect,
 make sure the port 8910 in UDP
 is forwarded on your router."
 
-[node name="FindPublicIP" type="LinkButton" parent="LobbyPanel"]
+[node name="FindPublicIP" type="LinkButton" parent="LobbyPanel" unique_id=468477990]
 visible = false
 layout_mode = 1
 anchors_preset = 8
