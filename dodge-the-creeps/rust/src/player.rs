@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) godot-rust; Bromeon and contributors.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 use godot::classes::{AnimatedSprite2D, Area2D, CollisionShape2D, IArea2D, Input};
 use godot::prelude::*;
 
@@ -16,7 +23,7 @@ impl Player {
     #[signal]
     pub fn hit();
 
-    #[func]
+    // No #[func], connected in pure Rust (see ready).
     fn on_player_body_entered(&mut self, _body: Gd<Node2D>) {
         self.base_mut().hide();
         self.signals().hit().emit();
@@ -25,6 +32,8 @@ impl Player {
             .base()
             .get_node_as::<CollisionShape2D>("CollisionShape2D");
 
+        // Disabling a collision shape must be deferred, as we are inside a physics callback.
+        // Godot exposes no typed API for deferred property writes, hence the string-based one.
         collision_shape.set_deferred("disabled", &true.to_variant());
     }
 
@@ -70,7 +79,6 @@ impl IArea2D for Player {
 
         let mut velocity = Vector2::new(0.0, 0.0);
 
-        // Note: exact=false by default, in Rust we have to provide it explicitly
         let input = Input::singleton();
         if input.is_action_pressed("move_right") {
             velocity += Vector2::RIGHT;
@@ -88,18 +96,14 @@ impl IArea2D for Player {
         if velocity.length() > 0.0 {
             velocity = velocity.normalized() * self.speed;
 
-            let animation;
-
-            if velocity.x != 0.0 {
-                animation = "right";
-
+            let animation = if velocity.x != 0.0 {
                 animated_sprite.set_flip_v(false);
-                animated_sprite.set_flip_h(velocity.x < 0.0)
+                animated_sprite.set_flip_h(velocity.x < 0.0);
+                "right"
             } else {
-                animation = "up";
-
-                animated_sprite.set_flip_v(velocity.y > 0.0)
-            }
+                animated_sprite.set_flip_v(velocity.y > 0.0);
+                "up"
+            };
 
             animated_sprite.play_ex().name(animation).done();
         } else {

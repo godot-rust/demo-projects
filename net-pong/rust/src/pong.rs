@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) godot-rust; Bromeon and contributors.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 use crate::ball::Ball;
 use godot::classes::{Area2D, Button, INode2D, Label, Node2D};
 use godot::prelude::*;
@@ -31,24 +38,21 @@ pub struct Pong {
 #[godot_api]
 impl INode2D for Pong {
     fn ready(&mut self) {
-        if self.base().get_multiplayer().unwrap().is_server() {
+        let multiplayer = self.base().get_multiplayer().unwrap();
+
+        let authority = if multiplayer.is_server() {
             // For the server, give control of player 2 to the other peer.
-            let authority = self.base().get_multiplayer().unwrap().get_peers()[0];
-            self.client_player.set_multiplayer_authority(authority);
+            multiplayer.get_peers()[0]
         } else {
             // For the client, give control of player 2 to itself.
-            let authority = self.base().get_multiplayer().unwrap().get_unique_id();
-            self.client_player.set_multiplayer_authority(authority);
-        }
+            multiplayer.get_unique_id()
+        };
+        self.client_player.set_multiplayer_authority(authority);
 
-        let gd_ref = self.to_gd();
         self.exit_game
             .signals()
             .pressed()
-            .builder()
-            .connect_other_mut(&gd_ref, |this: &mut Self| {
-                this._on_exit_game_pressed();
-            });
+            .connect_other(&self.to_gd(), Self::on_exit_game_pressed);
     }
 }
 
@@ -84,8 +88,8 @@ impl Pong {
         }
     }
 
-    #[func]
-    fn _on_exit_game_pressed(&mut self) {
+    // No #[func], connected in pure Rust.
+    fn on_exit_game_pressed(&mut self) {
         self.signals().game_finished().emit();
     }
 }

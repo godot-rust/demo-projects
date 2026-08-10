@@ -1,7 +1,13 @@
-use crate::mob;
-use crate::player;
+/*
+ * Copyright (c) godot-rust; Bromeon and contributors.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+use crate::mob::Mob;
 use crate::player::Player;
-use crate::scorelabel::UserInterface;
+use crate::user_interface::UserInterface;
 
 use godot::classes::{ColorRect, InputEvent, PathFollow3D, Timer};
 use godot::prelude::*;
@@ -15,8 +21,14 @@ pub struct MainScene {
     #[init(node = "MobTimer")]
     mob_timer: OnReady<Gd<Timer>>,
 
+    #[init(node = "Player")]
+    player: OnReady<Gd<Player>>,
+
     #[init(node = "UserInterface")]
     user_interface: OnReady<Gd<UserInterface>>,
+
+    #[init(node = "UserInterface/Retry")]
+    retry: OnReady<Gd<ColorRect>>,
 
     base: Base<Node>,
 }
@@ -24,24 +36,16 @@ pub struct MainScene {
 #[godot_api]
 impl INode for MainScene {
     fn ready(&mut self) {
-        self.base()
-            .get_node_as::<ColorRect>("UserInterface/Retry")
-            .hide();
+        self.retry.hide();
 
-        self.base()
-            .get_node_as::<Player>("Player")
+        self.player
             .signals()
             .hit()
             .connect_other(&self.to_gd(), Self::on_player_hit);
     }
 
     fn unhandled_input(&mut self, event: Gd<InputEvent>) {
-        if event.is_action_pressed("ui_accept")
-            && self
-                .base()
-                .get_node_as::<ColorRect>("UserInterface/Retry")
-                .is_visible()
-        {
+        if event.is_action_pressed("ui_accept") && self.retry.is_visible() {
             self.base().get_tree().reload_current_scene();
         }
     }
@@ -49,7 +53,7 @@ impl INode for MainScene {
 
 #[godot_api]
 impl MainScene {
-    #[func]
+    #[func] // needed because connected in Editor UI (main.tscn).
     fn on_mob_timer_timeout(&mut self) {
         // Create mob instance.
         let mut mob_spawn_location = self
@@ -61,12 +65,9 @@ impl MainScene {
         mob_spawn_location.set_progress_ratio(rand::random_range(0.0..=1.0));
 
         // Communicate the spawn location and the player's location to the mob.
-        let player_position = self
-            .base()
-            .get_node_as::<player::Player>("Player")
-            .get_position();
+        let player_position = self.player.get_position();
 
-        let mut mob = self.mob_scene.instantiate_as::<mob::Mob>();
+        let mut mob = self.mob_scene.instantiate_as::<Mob>();
 
         mob.bind_mut()
             .initialize(mob_spawn_location.get_position(), player_position);
@@ -80,12 +81,9 @@ impl MainScene {
             .connect_other(&*self.user_interface, UserInterface::on_mob_squashed);
     }
 
-    #[func]
-    pub fn on_player_hit(&mut self) {
+    // No #[func], connected in pure Rust.
+    fn on_player_hit(&mut self) {
         self.mob_timer.stop();
-
-        self.base()
-            .get_node_as::<ColorRect>("UserInterface/Retry")
-            .show();
+        self.retry.show();
     }
 }

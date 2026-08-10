@@ -1,6 +1,13 @@
+/*
+ * Copyright (c) godot-rust; Bromeon and contributors.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 use crate::{hud, mob, player};
 
-use godot::classes::{AudioStreamPlayer, Marker2D, PathFollow2D, RigidBody2D, Timer};
+use godot::classes::{AudioStreamPlayer, Marker2D, PathFollow2D, Timer};
 use godot::prelude::*;
 
 use std::f32::consts::PI;
@@ -123,21 +130,20 @@ impl Main {
             .base()
             .get_node_as::<PathFollow2D>("MobPath/MobSpawnLocation");
 
-        let mut mob_scene = self.mob_scene.instantiate_as::<RigidBody2D>();
+        // Engine methods such as set_position() are available through Gd<Mob>, so there is no need to
+        // instantiate as RigidBody2D and cast afterwards.
+        let mut mob = self.mob_scene.instantiate_as::<mob::Mob>();
 
-        let progress = rand::random_range(u32::MIN..u32::MAX);
+        let progress = rand::random::<u32>();
 
         mob_spawn_location.set_progress(progress as f32);
-        mob_scene.set_position(mob_spawn_location.get_position());
+        mob.set_position(mob_spawn_location.get_position());
 
         let mut direction = mob_spawn_location.get_rotation() + PI / 2.0;
         direction += rand::random_range(-PI / 4.0..PI / 4.0);
 
-        mob_scene.set_rotation(direction);
+        mob.set_rotation(direction);
 
-        self.base_mut().add_child(&mob_scene);
-
-        let mut mob = mob_scene.cast::<mob::Mob>();
         let range = {
             // Local scope to bind `mob` user object
             let mob = mob.bind();
@@ -152,6 +158,8 @@ impl Main {
             .signals()
             .start_game()
             .connect_other(&mob, mob::Mob::on_start_game);
+
+        self.base_mut().add_child(&mob);
     }
 
     // These timers could also be stored as OnReady fields, but are now fetched via function for demonstration purposes.

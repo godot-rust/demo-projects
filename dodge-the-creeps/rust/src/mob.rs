@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) godot-rust; Bromeon and contributors.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 use godot::classes::{AnimatedSprite2D, IRigidBody2D, RigidBody2D};
 use godot::prelude::*;
 
@@ -17,7 +24,7 @@ impl Mob {
         self.base_mut().queue_free();
     }
 
-    #[func]
+    // No #[func], connected in pure Rust (see Main::on_mob_timer_timeout).
     pub fn on_start_game(&mut self) {
         self.base_mut().queue_free();
     }

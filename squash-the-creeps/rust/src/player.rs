@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) godot-rust; Bromeon and contributors.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 use crate::mob::Mob;
 use godot::classes::{AnimationPlayer, CharacterBody3D, CollisionShape3D, ICharacterBody3D, Input};
 use godot::prelude::*;
@@ -8,25 +15,31 @@ use std::f32::consts::FRAC_PI_6;
 pub struct Player {
     /// How fast the player moves in meters per second.
     #[export]
+    #[init(val = 14.0)]
     speed: f32,
 
     /// Vertical impulse applied to the character upon jumping in meters per second.
     #[export]
+    #[init(val = 20.0)]
     jump_impulse: f32,
 
     /// Vertical impulse applied to the character upon bouncing over a mob in meters per second.
     #[export]
+    #[init(val = 16.0)]
     bounce_impulse: f32,
 
     /// The downward acceleration when in the air, in meters per second.
     #[export]
+    #[init(val = 75.0)]
     fall_acceleration: f32,
 
     /// The target velocity of the character (node property)
     #[export]
     target_velocity: Vector3,
+
     base: Base<CharacterBody3D>,
 }
+
 #[godot_api]
 impl ICharacterBody3D for Player {
     fn physics_process(&mut self, delta: f64) {
@@ -52,7 +65,7 @@ impl ICharacterBody3D for Player {
             direction = direction.normalized();
 
             // Take the pivot node and rotate it to face the direction we're moving in.
-            let mut pivot = self.base_mut().get_node_as::<Node3D>("Pivot");
+            let mut pivot = self.base().get_node_as::<Node3D>("Pivot");
 
             // Setting the basis property will affect the rotation of the node.
             pivot.set_basis(Basis::looking_at(-direction));
@@ -127,11 +140,14 @@ impl Player {
         self.base_mut().queue_free();
     }
 
-    #[func]
+    #[func] // needed because connected in Editor UI (player.tscn).
     pub fn on_mob_detector_body_entered(&mut self, _body: Gd<CharacterBody3D>) {
         let mut collision_shape = self
             .base()
             .get_node_as::<CollisionShape3D>("CollisionShape3D");
+
+        // Disabling a collision shape must be deferred, as we are inside a physics callback.
+        // Godot exposes no typed API for deferred property writes, hence the string-based one.
         collision_shape.set_deferred("disabled", &true.to_variant());
 
         self.die();

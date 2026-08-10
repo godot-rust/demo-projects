@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) godot-rust; Bromeon and contributors.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 use godot::classes::{Control, Label};
 use godot::prelude::*;
 
@@ -10,7 +17,7 @@ pub struct UserInterface {
 
 #[godot_api]
 impl UserInterface {
-    #[func]
+    // No #[func], connected in pure Rust (see MainScene::on_mob_timer_timeout).
     pub fn on_mob_squashed(&mut self) {
         self.score += 1;
 

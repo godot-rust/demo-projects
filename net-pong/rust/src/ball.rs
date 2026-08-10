@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) godot-rust; Bromeon and contributors.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 use crate::pong::Pong;
 use godot::classes::{Area2D, IArea2D};
 use godot::prelude::*;
@@ -41,28 +48,22 @@ impl IArea2D for Ball {
         let mut parent = self.base().get_parent().unwrap().cast::<Pong>();
         // Use base_mut() to allow for reentrancy – required if a game stops, and we need to reset our ball.
         let mut guard = self.base_mut();
-        if guard.is_multiplayer_authority() {
-            // Only the master will decide when the ball is out on
-            // the left side (its own side). This makes the game
-            // playable even if latency is high and ball is going
-            // fast. Otherwise, the ball might be out in the other
-            // player's screen but not this one.
-            if ball_pos.x < 0.0 {
-                let args = vslice![false];
-                parent.rpc("update_score", args);
-                guard.rpc("reset_ball", args);
-            }
+
+        // Each peer only decides when the ball is out on its own side: the authority (master) on the
+        // left, the puppet on the right. This makes the game playable even if latency is high and the
+        // ball is going fast. Otherwise, the ball might be out on the other player's screen but not
+        // on this one.
+        let for_left = !guard.is_multiplayer_authority();
+        let is_out = if for_left {
+            ball_pos.x > screen_size.x
         } else {
-            // Only the puppet will decide when the ball is out on
-            // the right side, which is its own side. This makes
-            // the game playable even if latency is high and ball
-            // is going fast. Otherwise, the ball might be out in the
-            // other player's screen but not this one.
-            if ball_pos.x > screen_size.x {
-                let args = vslice![true];
-                parent.rpc("update_score", args);
-                guard.rpc("reset_ball", args);
-            }
+            ball_pos.x < 0.0
+        };
+
+        if is_out {
+            let args = vslice![for_left];
+            parent.rpc("update_score", args);
+            guard.rpc("reset_ball", args);
         }
     }
 }

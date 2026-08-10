@@ -31,7 +31,7 @@ struct Reloadable {
     #[init(val = Planet::Earth)]
     favorite_planet: Planet,
     //
-    // HOT-RELOAD: uncomment this to add a new exported field (also update init() below).
+    // HOT-RELOAD: uncomment this to add a new exported field.
     // #[export]
     // some_string: GString,
 }
@@ -45,12 +45,12 @@ impl Reloadable {
         100
     }
 
-    // HOT-RELOAD: uncomment to make new function accessible.
-
-    #[func]
-    fn get_planet(&self) -> Planet {
-        self.favorite_planet
-    }
+    //
+    // HOT-RELOAD: uncomment to make a new function accessible.
+    // #[func]
+    // fn get_planet(&self) -> Planet {
+    //     self.favorite_planet
+    // }
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------

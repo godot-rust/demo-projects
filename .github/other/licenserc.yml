@@ -17,8 +17,7 @@ header:
       file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
   paths:
-#     - '**/*.rs'
-#     - '**/*.gd'
+    - '**/*.rs'
     - '**/*.sh'
     - '.github/**/*.yml'
 
