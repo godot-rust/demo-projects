@@ -145,6 +145,13 @@ impl Main {
         };
 
         mob.set_linear_velocity(Vector2::new(range, 0.0).rotated(real::from_f32(direction)));
+
+        // Connect Hud::start_game -> Mob::on_start_game, so that mobs from the previous round are
+        // removed when a new game begins.
+        self.hud
+            .signals()
+            .start_game()
+            .connect_other(&mob, mob::Mob::on_start_game);
     }
 
     // These timers could also be stored as OnReady fields, but are now fetched via function for demonstration purposes.

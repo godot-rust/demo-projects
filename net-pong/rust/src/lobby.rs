@@ -1,7 +1,7 @@
 use godot::classes::enet_connection::CompressionMode;
 use godot::classes::object::ConnectFlags;
 use godot::classes::{
-    Button, ENetMultiplayerPeer, IPanel, Label, LineEdit, LinkButton, Os, Panel, ProjectSettings,
+    Button, ENetMultiplayerPeer, IPanel, Label, LineEdit, LinkButton, Panel, ProjectSettings,
 };
 use godot::global::Error;
 use godot::prelude::*;
@@ -25,6 +25,7 @@ pub struct Lobby {
     status_fail: OnEditor<Gd<Label>>,
     #[export]
     port_forward_label: OnEditor<Gd<Label>>,
+    // A LinkButton opens its `uri` property when pressed, so no Rust handler is needed here.
     #[export]
     find_public_ip_button: OnEditor<Gd<LinkButton>>,
     peer: Option<Gd<ENetMultiplayerPeer>>,
@@ -200,10 +201,5 @@ impl Lobby {
             .get_window()
             .unwrap()
             .set_title(&format!("{application_name}: Client"));
-    }
-
-    fn _on_find_public_ip_pressed(&mut self) {
-        let mut os = Os::singleton();
-        os.shell_open("https://icanhazip.com/");
     }
 }

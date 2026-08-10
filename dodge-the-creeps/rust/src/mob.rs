@@ -18,7 +18,7 @@ impl Mob {
     }
 
     #[func]
-    fn on_start_game(&mut self) {
+    pub fn on_start_game(&mut self) {
         self.base_mut().queue_free();
     }
 }

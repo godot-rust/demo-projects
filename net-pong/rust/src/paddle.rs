@@ -43,8 +43,10 @@ impl IArea2D for Paddle {
             let input = Input::singleton();
             self.motion = input.get_axis("move_up", "move_down");
 
+            // Hide the "You" hint once the local player starts moving their paddle.
             if !self.you_hidden && self.motion != 0.0 {
                 self.you_label.hide();
+                self.you_hidden = true;
             }
 
             self.motion *= MOTION_SPEED;
@@ -54,7 +56,9 @@ impl IArea2D for Paddle {
             let args = vslice![self.base().get_position(), self.motion];
             self.base_mut().rpc("set_pos_and_motion", args);
         } else if !self.you_hidden {
+            // The remote paddle never shows the hint.
             self.you_label.hide();
+            self.you_hidden = true;
         }
 
         let translation = Vector2::new(0.0, self.motion * delta);
