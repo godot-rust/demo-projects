@@ -57,14 +57,10 @@ echo "----------------------------------------------------"
 
 echo "OS: $OSTYPE"
 
-# On Windows, UIDs are different than on Linux/macOS. This is currently impossible to keep consistent, so ignore those errors.
-# TODO omit this once 4.3 is out and UIDs work properly.
-if [[ "$OSTYPE" == "msys" ]]; then
-    if grep --quiet "ERROR:" "$logfile" | grep -v --quiet "ext_resource, invalid UID"; then
-        echo "::error::$PRE Godot engine encountered (non-UID) errors while running."
-        exit 1
-    fi
-elif grep --quiet "ERROR:" "$logfile"; then
+# Any "ERROR:" fails the job, except UID mismatches: on Windows, resource UIDs differ from Linux/macOS, which is currently impossible to keep
+# consistent. Filtering unconditionally keeps one code path for all platforms.
+# TODO omit the filter once .import files are committed, which makes UIDs stable across machines (see TODO.md).
+if grep "ERROR:" "$logfile" | grep --quiet --invert-match "ext_resource, invalid UID"; then
     echo "::error::$PRE Godot engine encountered errors while running."
     exit 1
 fi

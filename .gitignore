@@ -7,10 +7,16 @@
 target
 Cargo.lock
 
+# Emscripten SDK, used by the build-wasm.sh scripts.
+emsdk
+
 # Godot
 # .godot needs to be a pattern like this and not a directory, otherwise the negative statements below don't apply
 **/.godot/**
 *.import
+
+# Android build template, installed by Godot inside each godot/ project directory.
+android/
 
 # Needed to run projects without having to open the editor first.
 !**/.godot/extension_list.cfg
@@ -18,11 +24,6 @@ Cargo.lock
 # This project: input JSONs, codegen, exporting Godot builds
 gen
 export
-
-# Temporary tweaks, remove later
-/script
-*.bat
-exp.rs
 
 # Mac specific
 .DS_Store

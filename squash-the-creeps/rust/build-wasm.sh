@@ -10,5 +10,5 @@ cd `dirname "$0"`
 # We build the host gdextension first so that the godot editor doesn't complain.
 cargo +nightly build --package squash-the-creeps &&
 cargo +nightly build --package squash-the-creeps \
-  --features godot/experimental-wasm,godot/lazy-function-tables \
+  --features godot/experimental-wasm,godot/experimental-wasm-nothreads,godot/lazy-function-tables \
   --target wasm32-unknown-emscripten -Zbuild-std $@

@@ -93,19 +93,8 @@ jobs:
     strategy:
       fail-fast: false # cancel all jobs as soon as one fails?
       matrix:
-        # Order this way because macOS typically has the longest duration, followed by Windows, so it benefits total workflow execution time.
-        # Additionally, the 'linux (msrv *)' special case will then be listed next to the other 'linux' jobs.
-        # Note: Windows uses '--target x86_64-pc-windows-msvc' by default as Cargo argument.
+        # Per-OS jobs are covered by 'run-examples' below; here we only run the special Rust toolchains.
         include:
-#           - name: macos
-#             os: macos-latest # arm64
-#
-#           - name: windows
-#             os: windows-latest
-#
-#           - name: linux
-#             os: ubuntu-22.04
-
           - name: linux
             os: ubuntu-22.04
             rust-toolchain: nightly
