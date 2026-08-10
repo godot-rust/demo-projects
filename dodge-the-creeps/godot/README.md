@@ -1,28 +1,20 @@
 # Dodge the Creeps
 
-This is a simple game where your character must move
-and avoid the enemies for as long as possible.
+This is a simple game where your character must move and avoid the enemies for as long as possible.
 
-This is a finished version of the game featured in the
-["Your first 2D game"](https://docs.godotengine.org/en/latest/getting_started/first_2d_game/index.html)
-tutorial in the documentation. For more details,
-consider following the tutorial in the documentation.
+Rust port of the game featured in the ["Your first 2D game"](https://docs.godotengine.org/en/latest/getting_started/first_2d_game/index.html)
+tutorial of the Godot documentation. The gameplay logic lives in [`../rust/src`](../rust/src); the Godot project only
+contains scenes and assets.
 
-Language: GDScript
+Language: Rust (via [godot-rust](https://github.com/godot-rust/gdext))
 
 Renderer: Vulkan Mobile
 
-Note: There is a C# version available [here](https://github.com/godotengine/godot-demo-projects/tree/master/mono/dodge_the_creeps).
-
-Note: There is a GDNative C++ version available [here](https://github.com/godotengine/gdnative-demos/tree/master/cpp/dodge_the_creeps).
-
-Check out this demo on the asset library: https://godotengine.org/asset-library/asset/515
+Upstream GDScript demo: [2d/dodge_the_creeps](https://github.com/godotengine/godot-demo-projects/tree/master/2d/dodge_the_creeps)
 
 ## Screenshots
 
 ![GIF from the documentation](https://docs.godotengine.org/en/latest/_images/dodge_preview.gif)
-
-![Screenshot](screenshots/dodge.png)
 
 ## Copying
 

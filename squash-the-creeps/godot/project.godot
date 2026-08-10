@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Squash the Creeps (3D)"
 run/main_scene="uid://b70g8epauqibi"
-config/features=PackedStringArray("4.4")
+config/features=PackedStringArray("4.5")
 config/icon="res://icon.png"
 
 [autoload]

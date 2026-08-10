@@ -32,6 +32,15 @@ We currently feature the following demo projects:
   - Godot upstream demo: [networking/multiplayer_pong](https://github.com/godotengine/godot-demo-projects/tree/master/networking/multiplayer_pong)
 
 
+## Running a demo
+
+Build the Rust library, then open the demo's `godot/project.godot` in the Godot editor:
+
+```bash
+cargo build -p dodge-the-creeps  # or hot-reload, squash-the-creeps, net-pong
+```
+
+
 ## Engine and library versions
 
 Demos are written to work with **latest stable** Godot version (last official release), and last `master` version of godot-rust.

@@ -1,5 +1,5 @@
 [workspace]
-resolver = "2"
+resolver = "3" # Edition 2024 default; requires Rust 1.84+.
 members = [
     "dodge-the-creeps/rust",
     "hot-reload/rust",

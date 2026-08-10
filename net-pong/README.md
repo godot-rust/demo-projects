@@ -1,25 +1,15 @@
-# Godot Rust Multiplayer Pong
-based on https://godotengine.org/asset-library/asset/2798
-source code: https://github.com/godotengine/godot-demo-projects/tree/4.3/networking/multiplayer_pong
+# Net Pong
 
-## License
+A networked Pong game, using Godot's high-level multiplayer API with godot-rust. One player presses **Host**, the other
+types in the host's IP address and presses **Join**.
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+Concepts on display: `#[rpc]` methods, multiplayer authority, and `OnEditor` node references wired up in the editor. The
+game logic lives in [`rust/src`](rust/src); the Godot project in [`godot`](godot) only holds scenes and assets.
 
-The godot-rust Ferris icon was obtained from [their repository](https://github.com/godot-rust/assets) and its licence's details are explained [here](https://github.com/godot-rust/assets/blob/master/asset-licenses.md).
+## Copying
 
-Shield: [![CC BY 4.0][cc-by-shield]][cc-by]
+Unlike the rest of this repository, the Godot project (scenes, assets) is derived from the upstream demo and stays under
+the MIT License; see [LICENSE](LICENSE). The Rust code is [MPL 2.0](../License.txt) as everywhere else.
 
-This work is licensed under a
-[Creative Commons Attribution 4.0 International License][cc-by].
-
-[![CC BY 4.0][cc-by-image]][cc-by]
-
-[cc-by]: http://creativecommons.org/licenses/by/4.0/
-[cc-by-image]: https://i.creativecommons.org/l/by/4.0/88x31.png
-[cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
-
-## Acknowledgments
-
-- [Godot Engine](https://godotengine.org/)
-- [Godot Rust](https://github.com/godot-rust/gdext) for their fantastic work on integrating Rust with Godot.
+The godot-rust Ferris icon comes from [the assets repository](https://github.com/godot-rust/assets); its license is
+explained [here](https://github.com/godot-rust/assets/blob/master/asset-licenses.md).

@@ -1,14 +1,14 @@
 [package]
 name = "hot-reload"
 version = "0.1.0"
-edition = "2021"
-rust-version = "1.90"
+edition = "2024"
+rust-version = "1.94"
 license = "MPL-2.0"
 publish = false
 
 [lib]
 crate-type = ["cdylib"]
 
-[dependencies.godot]
-git = "https://github.com/godot-rust/gdext.git"
-features = ["register-docs"] # Registers RustDoc comments, so they appear in editor docs.
+[dependencies]
+# Feature "register-docs" registers RustDoc comments, so they appear in editor docs.
+godot = { git = "https://github.com/godot-rust/gdext.git", features = ["register-docs"] }
