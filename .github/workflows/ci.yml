@@ -49,7 +49,7 @@ defaults:
 
 jobs:
   rustfmt:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -63,7 +63,7 @@ jobs:
 
 
   clippy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -104,16 +104,16 @@ jobs:
 #             os: windows-latest
 #
 #           - name: linux
-#             os: ubuntu-22.04
+#             os: ubuntu-24.04
 
           - name: linux
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             rust-toolchain: nightly
             rust-special: -minimal-deps
             rust-cache-key: minimal-deps
 
           - name: linux
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             rust-toolchain: "1.94"
             rust-special: -msrv
 
@@ -171,13 +171,13 @@ jobs:
           # Linux
 
           - name: linux
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             artifact-name: linux-nightly
             godot-binary: godot.linuxbsd.editor.dev.x86_64
             retry: true
 
           - name: linux-4.6
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             artifact-name: linux-4.6
             godot-binary: godot.linuxbsd.editor.dev.x86_64
             retry: true
@@ -239,7 +239,7 @@ jobs:
 
 
   cargo-deny-machete:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -265,7 +265,7 @@ jobs:
 
 
   license-guard:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -296,7 +296,7 @@ jobs:
       - cargo-deny-machete
       - license-guard
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       # Deliberate choice to use bash script and not GitHub Action glob syntax, as that is not well-documented and hard to get right.
       # For example: contains(needs.*.result, 'success') does NOT work because * is a logical OR, thus true if a single job succeeds.
